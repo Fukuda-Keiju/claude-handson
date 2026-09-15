@@ -1,0 +1,15 @@
+/* フォーム画面のごく最小限のレイアウト。CSS Modules は使えないので通常の CSS。 */
+.task-form {
+    width: 100%;
+}
+
+.task-form__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.task-form__alert {
+    margin-bottom: 12px;
+}

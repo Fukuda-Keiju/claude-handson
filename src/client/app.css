@@ -1,0 +1,15 @@
+/* ページ全体の余白と背景だけを整える最小スタイル。
+   色や余白は Horizon(Next Experience) の CSS 変数を使い、
+   未定義のテーマでも崩れないよう fallback を重ねている。 */
+.task-board {
+    padding: var(--now-spacing--lg, var(--now-static-space--lg, 24px));
+    background-color: var(--now-color_background--primary, #ffffff);
+    color: var(--now-color_text--primary, #2e3338);
+    min-block-size: 100vh;
+    box-sizing: border-box;
+}
+
+/* 見出しと本文（一覧・フォーム）の間隔 */
+.task-board__content {
+    margin-block-start: var(--now-spacing--md, var(--now-static-space--md, 16px));
+}

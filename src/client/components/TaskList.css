@@ -1,0 +1,12 @@
+/* 一覧画面のレイアウト。色や余白は Horizon(Polaris) の CSS 変数を使うと
+   インスタンスのテーマ・ダークモードに自動で追従する。 */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--now-spacing-md, 16px);
+}
+
+/* 絞り込み Select は幅を抑えて左寄せにする */
+.task-list__filter {
+    max-width: 280px;
+}

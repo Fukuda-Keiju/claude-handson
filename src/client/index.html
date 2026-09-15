@@ -1,0 +1,49 @@
+<!-- UI Page のエントリ HTML。DOCTYPE は書かない（ServiceNow が Jelly として処理するため） -->
+<html class="-polaris">
+  <head>
+    <title>Handson Task ボード</title>
+    <!-- window.g_ck など Next Experience のグローバルと、クラシック UI 用スクリプト群を注入する -->
+    <sdk:now-ux-globals></sdk:now-ux-globals>
+    <!--
+      回避策: 上のタグが読み込む Prototype.js 1.7 は Array.from を独自の $A で上書きし、
+      Set などの iterable を渡すと空配列を返す。プラットフォームの React フォーム部品は
+      Array.from(new Set(...)) でデータソース一覧を組み立てるため、そのままだと初期化に失敗して
+      画面が真っ白になる。ここで標準仕様どおりの Array.from に戻す。
+    -->
+    <script>
+      (function () {
+        var isNative = String(Array.from).indexOf('[native code]') !== -1;
+        if (isNative) { return; }
+        Array.from = function from(items, mapFn, thisArg) {
+          var arr;
+          if (items != null) {
+            if (typeof items[Symbol.iterator] === 'function') {
+              arr = [].concat(Array.prototype.slice.call(items.length !== undefined ? items : []));
+              if (items.length === undefined) {
+                arr = [];
+                var it = items[Symbol.iterator]();
+                for (var step = it.next(); !step.done; step = it.next()) { arr.push(step.value); }
+              }
+            } else {
+              arr = Array.prototype.slice.call(Object(items));
+            }
+          } else {
+            throw new TypeError('Array.from requires an array-like or iterable object');
+          }
+          if (typeof mapFn === 'function') {
+            return arr.map(function (v, i) { return mapFn.call(thisArg, v, i); });
+          }
+          return arr;
+        };
+      })();
+    </script>
+    <!-- uxpcb はキャッシュ破棄用のタイムスタンプ -->
+    <script
+      src="main.tsx?uxpcb=$[UxFrameworkScriptables.getFlushTimestamp()]"
+      type="module"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

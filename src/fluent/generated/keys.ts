@@ -5,6 +5,18 @@ declare global {
         namespace Internal {
             interface Keys extends KeysRegistry {
                 explicit: {
+                    'app-menu-handson': {
+                        table: 'sys_app_application'
+                        id: 'ce4a81aae5b549ca80106c7cbf871954'
+                    }
+                    'app-module-task-board': {
+                        table: 'sys_app_module'
+                        id: '03e36fd8592f491587d00878898e081a'
+                    }
+                    'app-module-task-list': {
+                        table: 'sys_app_module'
+                        id: '2010a8fdd5804f0c8d000fea6f7a32df'
+                    }
                     bom_json: {
                         table: 'sys_module'
                         id: 'ad3bfc7057bb43ca9620da5487363fd5'
@@ -67,6 +79,27 @@ declare global {
                         }
                     },
                     {
+                        table: 'sn_glider_source_artifact'
+                        id: '1c5247f743494d47a7dba9e74f196a8e'
+                        key: {
+                            name: 'x_2221398_handson_task_board.do - BYOUI Files'
+                        }
+                    },
+                    {
+                        table: 'sys_ux_lib_asset'
+                        id: '21f04efd10c747b1b4125eb1cc7e3021'
+                        key: {
+                            name: 'x_2221398_handson/main'
+                        }
+                    },
+                    {
+                        table: 'sys_ui_page'
+                        id: '2d7409e0bc0444e4b3d8f82c4e130f4e'
+                        key: {
+                            endpoint: 'x_2221398_handson_task_board.do'
+                        }
+                    },
+                    {
                         table: 'sys_choice'
                         id: '345bbafb3c0043aaa273fd5fd3b7015b'
                         key: {
@@ -116,6 +149,13 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ux_lib_asset'
+                        id: '6506ea2737a54e54badba41cadf06581'
+                        key: {
+                            name: 'x_2221398_handson/main.js.map'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '74c28aeac0634d59b705168126e8d3ef'
                         key: {
@@ -150,6 +190,22 @@ declare global {
                         }
                     },
                     {
+                        table: 'sn_glider_source_artifact_m2m'
+                        id: '9c2f5a5b9d54480c8b6365acde7bf3c3'
+                        key: {
+                            application_file: '21f04efd10c747b1b4125eb1cc7e3021'
+                            source_artifact: '1c5247f743494d47a7dba9e74f196a8e'
+                        }
+                    },
+                    {
+                        table: 'sn_glider_source_artifact_m2m'
+                        id: '9f97a9225e1c4b8e88a5d2814965b90c'
+                        key: {
+                            application_file: '6506ea2737a54e54badba41cadf06581'
+                            source_artifact: '1c5247f743494d47a7dba9e74f196a8e'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'a113f0e96d324320879c0942ff9f4006'
                         key: {
@@ -172,6 +228,14 @@ declare global {
                             name: 'x_2221398_handson_task'
                             element: 'NULL'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sn_glider_source_artifact_m2m'
+                        id: 'ef54322af37642b5af8d3b1480a17f1a'
+                        key: {
+                            application_file: '2d7409e0bc0444e4b3d8f82c4e130f4e'
+                            source_artifact: '1c5247f743494d47a7dba9e74f196a8e'
                         }
                     },
                     {
