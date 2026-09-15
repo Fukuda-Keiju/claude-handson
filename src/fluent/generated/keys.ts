@@ -109,6 +109,34 @@ declare global {
                         table: 'sys_atf_test'
                         id: '374831b16f5d4de5a51053e0d6cca11b'
                     }
+                    'atf-header-new-step-ui': {
+                        table: 'sys_atf_step'
+                        id: '73c81f3285d24003b0a37890499e3ba3'
+                    }
+                    'atf-header-new-test': {
+                        table: 'sys_atf_test'
+                        id: '215a3a36cd9f4aa8994626f751b74c0e'
+                    }
+                    'atf-kanban-delete': {
+                        table: 'sys_atf_step'
+                        id: 'd7416b49075d48f391b8f0232706ac57'
+                    }
+                    'atf-kanban-insert': {
+                        table: 'sys_atf_step'
+                        id: 'ffc411eea7a942d998e150848bc38800'
+                    }
+                    'atf-kanban-test': {
+                        table: 'sys_atf_test'
+                        id: '72337dbabf524eb493b33f146024d46b'
+                    }
+                    'atf-kanban-ui': {
+                        table: 'sys_atf_step'
+                        id: '424707df54a24ec094c9eaa4f990ab23'
+                    }
+                    'atf-kanban-validate': {
+                        table: 'sys_atf_step'
+                        id: 'c3740c884a6d49b2a58fc209407e4167'
+                    }
                     'atf-list-delete-done': {
                         table: 'sys_atf_step'
                         id: '4d910685ec0c4e509294296a45bb878a'
@@ -141,9 +169,57 @@ declare global {
                         table: 'sys_atf_step'
                         id: 'dda3126ef936434fb5184cda719f0826'
                     }
+                    'atf-open-card-delete': {
+                        table: 'sys_atf_step'
+                        id: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                    }
+                    'atf-open-card-insert': {
+                        table: 'sys_atf_step'
+                        id: 'c1a5002e844e4441b3ae5847e9832447'
+                    }
+                    'atf-open-card-test': {
+                        table: 'sys_atf_test'
+                        id: 'e0da01068efe42c38389721f3e005581'
+                    }
+                    'atf-open-card-ui': {
+                        table: 'sys_atf_step'
+                        id: 'bcbdd73a13f74df780825cd7070f64e4'
+                    }
                     'atf-suite-handson': {
                         table: 'sys_atf_test_suite'
                         id: '13abb880d135480488bf9b3653db9afa'
+                    }
+                    'atf-tabs-step-ui': {
+                        table: 'sys_atf_step'
+                        id: 'f48f3f403cd44e8cb7941e243bc319ab'
+                    }
+                    'atf-tabs-test': {
+                        table: 'sys_atf_test'
+                        id: 'fc4b2b636042447dac42bea6aa98040a'
+                    }
+                    'atf-tiles-delete-done': {
+                        table: 'sys_atf_step'
+                        id: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
+                    }
+                    'atf-tiles-delete-open': {
+                        table: 'sys_atf_step'
+                        id: '56a080206b3744ce8cd5a27af920736e'
+                    }
+                    'atf-tiles-insert-done': {
+                        table: 'sys_atf_step'
+                        id: 'dcb817acd0084c86bc5b9641b47fc47f'
+                    }
+                    'atf-tiles-insert-open': {
+                        table: 'sys_atf_step'
+                        id: 'dfe71e00977a45f3872be664ddfea4d8'
+                    }
+                    'atf-tiles-step-ui': {
+                        table: 'sys_atf_step'
+                        id: '703994115a4c465bac7c3a161c02e50f'
+                    }
+                    'atf-tiles-test': {
+                        table: 'sys_atf_test'
+                        id: 'c48d3bab9c0a40d8a70fa1711a2f37f1'
                     }
                     'atf-unsaved-step-ui': {
                         table: 'sys_atf_step'
@@ -193,6 +269,14 @@ declare global {
                 composite: [
                     {
                         table: 'sys_variable_value'
+                        id: '00c41d32e7ff4318824bcf1427252f38'
+                        key: {
+                            document_key: 'c1a5002e844e4441b3ae5847e9832447'
+                            variable: 'dd54cf535320220002c6435723dc34fd'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '013506b4037e4b2ea1b1e301b770500e'
                         key: {
                             document_key: 'f17665f8186042c2849c109702664faf'
@@ -221,6 +305,14 @@ declare global {
                         key: {
                             document_key: '6d29a57c12a342bb8e82b89c88200300'
                             variable: 'c7e483f3671003007ba405225685effb'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '0757b1dfed394d3bb58739e9c519063c'
+                        key: {
+                            document_key: 'dcb817acd0084c86bc5b9641b47fc47f'
+                            variable: 'dd54cf535320220002c6435723dc34fd'
                         }
                     },
                     {
@@ -256,6 +348,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_variable_value'
+                        id: '0ed20feac0c04e2a9cf7113a9abead87'
+                        key: {
+                            document_key: 'dfe71e00977a45f3872be664ddfea4d8'
+                            variable: 'e6e3c7535320220002c6435723dc3496'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '100c50c7e9bb4a9d83b53d063ff02001'
                         key: {
@@ -269,6 +369,14 @@ declare global {
                         key: {
                             document_key: 'cb560b903ace4e2a951757b1de071067'
                             variable: '6aad5a575360220002c6435723dc34b0'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '1164d586fd9d474aa2a70992f3f77343'
+                        key: {
+                            document_key: 'c3740c884a6d49b2a58fc209407e4167'
+                            variable: 'cbddfa135320220002c6435723dc3415'
                         }
                     },
                     {
@@ -288,6 +396,14 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '15093a8735964d4581366b086442078d'
+                        key: {
+                            document_key: 'ffc411eea7a942d998e150848bc38800'
+                            variable: 'e6e3c7535320220002c6435723dc3496'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '17c74492b2ab4154b89152009089f6ee'
                         key: {
                             document_key: '2b86f9f2fba04ebdb3de38e523212639'
@@ -300,6 +416,14 @@ declare global {
                         key: {
                             document_key: 'cb560b903ace4e2a951757b1de071067'
                             variable: '67400008676003007ba405225685efa4'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '196e6b397d1e476d871aabc5e1b46dbe'
+                        key: {
+                            document_key: 'dfe71e00977a45f3872be664ddfea4d8'
+                            variable: '90144b535320220002c6435723dc3488'
                         }
                     },
                     {
@@ -357,6 +481,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_element_mapping'
+                        id: '2478a7b97b1b405086d5c9ad0e1d77ce'
+                        key: {
+                            id: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
+                            table: 'var__m_atf_input_variable_8df72288df60220062fe6c7a4df2636d'
+                            field: 'record_id'
+                        }
+                    },
+                    {
                         table: 'sys_atf_test_suite_test'
                         id: '26775def59de44a2b42b089f994f1c54'
                         key: {
@@ -366,10 +499,26 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '2684232efde24105b3f1d561ae301e93'
+                        key: {
+                            document_key: 'c3740c884a6d49b2a58fc209407e4167'
+                            variable: '52ed1e5b5360220002c6435723dc3421'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '272ab2a294464638b4becd04ac21dbb7'
                         key: {
                             document_key: '4d910685ec0c4e509294296a45bb878a'
                             variable: '3d6d8b935320220002c6435723dc349c'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '294c4d5a35e74e3fbdc1770f9802691b'
+                        key: {
+                            document_key: 'c3740c884a6d49b2a58fc209407e4167'
+                            variable: '6aad5a575360220002c6435723dc34b0'
                         }
                     },
                     {
@@ -387,6 +536,14 @@ declare global {
                         key: {
                             document_key: 'dda3126ef936434fb5184cda719f0826'
                             variable: 'b4e438ae73322010ac1560bdfaf6a7a2'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '2b96836d09294c85beb757aae6189adf'
+                        key: {
+                            document_key: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
+                            variable: 'c7e483f3671003007ba405225685effb'
                         }
                     },
                     {
@@ -433,6 +590,14 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '3590dbe416da4962b15a6d32c9e846f3'
+                        key: {
+                            document_key: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
+                            variable: 'd13d0b935320220002c6435723dc34c8'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '359c50eaa80242c88a36a470567de98b'
                         key: {
                             document_key: 'dda3126ef936434fb5184cda719f0826'
@@ -445,6 +610,14 @@ declare global {
                         key: {
                             document_key: 'fd52779a888d47bab80bc7db8481402c'
                             variable: '501c8f535320220002c6435723dc34da'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '368eff8d58084b58bdbe1418a7b2e0c6'
+                        key: {
+                            document_key: '703994115a4c465bac7c3a161c02e50f'
+                            variable: 'e216835dffdf3210f972ffffffffff53'
                         }
                     },
                     {
@@ -462,6 +635,14 @@ declare global {
                             name: 'x_2221398_handson_task'
                             element: 'completed_at'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '3bedf9b08c7140c5aedf1b9b0c9795f1'
+                        key: {
+                            document_key: 'c3740c884a6d49b2a58fc209407e4167'
+                            variable: 'ff6e125353a0220002c6435723dc3442'
                         }
                     },
                     {
@@ -520,6 +701,14 @@ declare global {
                         id: '40d16d5ad9d347a38ef08f23fd863ef8'
                         key: {
                             name: 'x_2221398_handson_task'
+                        }
+                    },
+                    {
+                        table: 'sys_atf_test_suite_test'
+                        id: '416540516ce34a1cb8ec3676a4f5005c'
+                        key: {
+                            test_suite: '13abb880d135480488bf9b3653db9afa'
+                            test: 'c48d3bab9c0a40d8a70fa1711a2f37f1'
                         }
                     },
                     {
@@ -615,6 +804,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_variable_value'
+                        id: '5233d6d144e141bfa459b5f97dfabdd0'
+                        key: {
+                            document_key: 'bcbdd73a13f74df780825cd7070f64e4'
+                            variable: 'e216835dffdf3210f972ffffffffff53'
+                        }
+                    },
+                    {
                         table: 'sys_element_mapping'
                         id: '54d5cbe6b1e3406b82343f1663d425f6'
                         key: {
@@ -625,10 +822,26 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '5781f14b94b74ebf93bb5dffd4821dde'
+                        key: {
+                            document_key: 'c3740c884a6d49b2a58fc209407e4167'
+                            variable: '67400008676003007ba405225685efa4'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '578dfab618834b68ac5b037ee4be9e9f'
                         key: {
                             document_key: 'd9ad718d94a74a7bb682b2c113e470bb'
                             variable: '52ed1e5b5360220002c6435723dc3421'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '5950cca2ec1a427292d75a4509801ea1'
+                        key: {
+                            document_key: 'dcb817acd0084c86bc5b9641b47fc47f'
+                            variable: '9024a37f671003007ba405225685efe5'
                         }
                     },
                     {
@@ -664,10 +877,34 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_variable_value'
+                        id: '5f1a22c765d041b799422a1b33651fc3'
+                        key: {
+                            document_key: 'd7416b49075d48f391b8f0232706ac57'
+                            variable: '3d6d8b935320220002c6435723dc349c'
+                        }
+                    },
+                    {
                         table: 'sys_ux_lib_asset'
                         id: '6506ea2737a54e54badba41cadf06581'
                         key: {
                             name: 'x_2221398_handson/main.js.map'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '67af8cb4b26441eb96cc1e8fa247deb8'
+                        key: {
+                            document_key: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                            variable: '8f7d0f935320220002c6435723dc3471'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '68979d31daa54f818ce0b5e87e983362'
+                        key: {
+                            document_key: '56a080206b3744ce8cd5a27af920736e'
+                            variable: 'c7e483f3671003007ba405225685effb'
                         }
                     },
                     {
@@ -719,6 +956,14 @@ declare global {
                         key: {
                             document_key: '40e33e00a1064cde8cc50807e9e3b63a'
                             variable: 'c7e483f3671003007ba405225685effb'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '73058673e3c8400cb9ae476befa4cd3b'
+                        key: {
+                            document_key: '56a080206b3744ce8cd5a27af920736e'
+                            variable: '3d6d8b935320220002c6435723dc349c'
                         }
                     },
                     {
@@ -805,6 +1050,22 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '81540a724f024dbd9af2e2ee7625dfcd'
+                        key: {
+                            document_key: 'ffc411eea7a942d998e150848bc38800'
+                            variable: '9024a37f671003007ba405225685efe5'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '8359dde5b19c40f5b23292e353fc1576'
+                        key: {
+                            document_key: 'd7416b49075d48f391b8f0232706ac57'
+                            variable: '8f7d0f935320220002c6435723dc3471'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '857458512a8c402484341c3532d774b5'
                         key: {
                             document_key: 'dda3126ef936434fb5184cda719f0826'
@@ -817,6 +1078,22 @@ declare global {
                         key: {
                             document_key: 'dda3126ef936434fb5184cda719f0826'
                             variable: '932d14a33756030064a52f3c8e41f120'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '873eee1c40e24778bb5b7c26f4d72f10'
+                        key: {
+                            document_key: 'c1a5002e844e4441b3ae5847e9832447'
+                            variable: 'e6e3c7535320220002c6435723dc3496'
+                        }
+                    },
+                    {
+                        table: 'sys_atf_test_suite_test'
+                        id: '8779031b83704c9b9740ae8ec9764042'
+                        key: {
+                            test_suite: '13abb880d135480488bf9b3653db9afa'
+                            test: '72337dbabf524eb493b33f146024d46b'
                         }
                     },
                     {
@@ -894,10 +1171,34 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '91132c7690114cfeb65b58f078609a3d'
+                        key: {
+                            document_key: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                            variable: '3d6d8b935320220002c6435723dc349c'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '9185331e1eb446b39ebc348eb681c7e8'
                         key: {
                             document_key: 'c016d830bffd4dd48da5bd0ea8dcd66c'
                             variable: '90144b535320220002c6435723dc3488'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '926ef02bff954547817f9d395d45074a'
+                        key: {
+                            document_key: 'ffc411eea7a942d998e150848bc38800'
+                            variable: '90144b535320220002c6435723dc3488'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: '93bf001440c74640bdec0e50e4121afd'
+                        key: {
+                            document_key: 'dfe71e00977a45f3872be664ddfea4d8'
+                            variable: 'dd54cf535320220002c6435723dc34fd'
                         }
                     },
                     {
@@ -984,6 +1285,14 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: '9b3e1098f1c543989932077d8a4904a7'
+                        key: {
+                            document_key: 'c1a5002e844e4441b3ae5847e9832447'
+                            variable: '90144b535320220002c6435723dc3488'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: '9b410910cbbc48b7a0da5a509b3e8525'
                         key: {
                             document_key: 'fc18acafbe134c358a41bf1f5c7324d8'
@@ -1032,10 +1341,36 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: 'a1b4d8b33e02452981fdb1c6f8bae589'
+                        key: {
+                            document_key: '56a080206b3744ce8cd5a27af920736e'
+                            variable: 'd13d0b935320220002c6435723dc34c8'
+                        }
+                    },
+                    {
+                        table: 'sys_element_mapping'
+                        id: 'a2394722ba2c4cafa29c6d7823dc695f'
+                        key: {
+                            id: 'c3740c884a6d49b2a58fc209407e4167'
+                            table: 'var__m_atf_input_variable_1f39a288df60220062fe6c7a4df2639d'
+                            field: 'record_id'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: 'a29af9df92074134bb4705b61f095a2d'
                         key: {
                             document_key: 'e7ce3ec56aa2458aa130857293f1ed6f'
                             variable: '67400008676003007ba405225685efa4'
+                        }
+                    },
+                    {
+                        table: 'sys_element_mapping'
+                        id: 'a571b2a25bbf4017ace67a3dee4a67a5'
+                        key: {
+                            id: '56a080206b3744ce8cd5a27af920736e'
+                            table: 'var__m_atf_input_variable_8df72288df60220062fe6c7a4df2636d'
+                            field: 'record_id'
                         }
                     },
                     {
@@ -1044,6 +1379,14 @@ declare global {
                         key: {
                             document_key: 'ebb0bb6863554c98a362e15a77a611bc'
                             variable: '90144b535320220002c6435723dc3488'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'aa32bb5081d141dbbec7540d2d2bfe82'
+                        key: {
+                            document_key: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                            variable: 'c7e483f3671003007ba405225685effb'
                         }
                     },
                     {
@@ -1098,6 +1441,14 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: 'aebb75276fd44e6c82a684f534786dec'
+                        key: {
+                            document_key: 'dcb817acd0084c86bc5b9641b47fc47f'
+                            variable: '90144b535320220002c6435723dc3488'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: 'af1653cabba54d489cd9196459ade6c9'
                         key: {
                             document_key: '68689d3ac1a9430da22c8eaac3c1403d'
@@ -1138,6 +1489,22 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: 'b9acc54af45b4c0699102c28da845bb7'
+                        key: {
+                            document_key: '424707df54a24ec094c9eaa4f990ab23'
+                            variable: 'e216835dffdf3210f972ffffffffff53'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'ba05fd1f3ae341d79694e45880887013'
+                        key: {
+                            document_key: '73c81f3285d24003b0a37890499e3ba3'
+                            variable: 'e216835dffdf3210f972ffffffffff53'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: 'bacca7bbf6e840788358771b1a31d570'
                         key: {
                             document_key: 'fc18acafbe134c358a41bf1f5c7324d8'
@@ -1146,9 +1513,25 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: 'bbc4ed24cbcf40c9b3a6c8a252172907'
+                        key: {
+                            document_key: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
+                            variable: '3d6d8b935320220002c6435723dc349c'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: 'bc8c483addc9449f9c638aed115415f9'
                         key: {
                             document_key: '4d910685ec0c4e509294296a45bb878a'
+                            variable: '8f7d0f935320220002c6435723dc3471'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'bf0e99af44454a2ba33e68848c096785'
+                        key: {
+                            document_key: '7096b53bd5ee48ef8a09cb9ab6bf17a7'
                             variable: '8f7d0f935320220002c6435723dc3471'
                         }
                     },
@@ -1183,6 +1566,22 @@ declare global {
                         key: {
                             document_key: '04194770472641ee9a02fee8c50ee76b'
                             variable: '3d6d8b935320220002c6435723dc349c'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'ce3df2116fd74d04865bf3e1b348ac95'
+                        key: {
+                            document_key: 'd7416b49075d48f391b8f0232706ac57'
+                            variable: 'c7e483f3671003007ba405225685effb'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'ced9358c6c914048a30c5b1b45ee43fa'
+                        key: {
+                            document_key: 'dcb817acd0084c86bc5b9641b47fc47f'
+                            variable: 'e6e3c7535320220002c6435723dc3496'
                         }
                     },
                     {
@@ -1227,10 +1626,58 @@ declare global {
                     },
                     {
                         table: 'sys_variable_value'
+                        id: 'd7e47127f88749ecbdb0cece6dbd1fb6'
+                        key: {
+                            document_key: '56a080206b3744ce8cd5a27af920736e'
+                            variable: '8f7d0f935320220002c6435723dc3471'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'd9281f308d4a465499ed678d1ac263f4'
+                        key: {
+                            document_key: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                            variable: 'd13d0b935320220002c6435723dc34c8'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'dbf50b1263f24f478273d5dca10a0233'
+                        key: {
+                            document_key: 'c1a5002e844e4441b3ae5847e9832447'
+                            variable: '9024a37f671003007ba405225685efe5'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'dd8a3ed3fb4046eb9a29faad5f8ef54b'
+                        key: {
+                            document_key: 'd7416b49075d48f391b8f0232706ac57'
+                            variable: 'd13d0b935320220002c6435723dc34c8'
+                        }
+                    },
+                    {
+                        table: 'sys_atf_test_suite_test'
+                        id: 'e083928ab85a4a6698fa8a6d2558a21c'
+                        key: {
+                            test_suite: '13abb880d135480488bf9b3653db9afa'
+                            test: '215a3a36cd9f4aa8994626f751b74c0e'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
                         id: 'e679dcf9ada34a41b724172d442e19e6'
                         key: {
                             document_key: 'cb560b903ace4e2a951757b1de071067'
                             variable: 'ff6e125353a0220002c6435723dc3442'
+                        }
+                    },
+                    {
+                        table: 'sys_atf_test_suite_test'
+                        id: 'e6f19f2d55cc4dc6ac21f88d85874511'
+                        key: {
+                            test_suite: '13abb880d135480488bf9b3653db9afa'
+                            test: 'fc4b2b636042447dac42bea6aa98040a'
                         }
                     },
                     {
@@ -1268,6 +1715,15 @@ declare global {
                     },
                     {
                         table: 'sys_element_mapping'
+                        id: 'ed64f789ed7d4b07a0a1fa10d68bbb35'
+                        key: {
+                            id: '2126fda36bcc4a9fa5eb49a789f68ea4'
+                            table: 'var__m_atf_input_variable_8df72288df60220062fe6c7a4df2636d'
+                            field: 'record_id'
+                        }
+                    },
+                    {
+                        table: 'sys_element_mapping'
                         id: 'ee9d709e647047b5974b0ff525ae5b0d'
                         key: {
                             id: '4ddc8f42c21b456282756a0016118f0f'
@@ -1292,6 +1748,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_variable_value'
+                        id: 'f1bc752a941a4b99b7a4b58cd53d871f'
+                        key: {
+                            document_key: 'dfe71e00977a45f3872be664ddfea4d8'
+                            variable: '9024a37f671003007ba405225685efe5'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'f223bbb9560e4545824b1c8b1562ffaa'
                         key: {
@@ -1307,6 +1771,22 @@ declare global {
                             name: 'x_2221398_handson_task'
                             element: 'due_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_atf_test_suite_test'
+                        id: 'f261a89f409647cfa55d4999712f090d'
+                        key: {
+                            test_suite: '13abb880d135480488bf9b3653db9afa'
+                            test: 'e0da01068efe42c38389721f3e005581'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'f31a660c8b004d59ae3dea17cb8c7817'
+                        key: {
+                            document_key: 'ffc411eea7a942d998e150848bc38800'
+                            variable: 'dd54cf535320220002c6435723dc34fd'
                         }
                     },
                     {
@@ -1331,6 +1811,15 @@ declare global {
                         key: {
                             document_key: '307a5d74967447779b849fb22ce47946'
                             variable: '8f7d0f935320220002c6435723dc3471'
+                        }
+                    },
+                    {
+                        table: 'sys_element_mapping'
+                        id: 'fac02764715449cba08744df677cba23'
+                        key: {
+                            id: 'd7416b49075d48f391b8f0232706ac57'
+                            table: 'var__m_atf_input_variable_8df72288df60220062fe6c7a4df2636d'
+                            field: 'record_id'
                         }
                     },
                     {
@@ -1380,6 +1869,14 @@ declare global {
                             id: '04194770472641ee9a02fee8c50ee76b'
                             table: 'var__m_atf_input_variable_8df72288df60220062fe6c7a4df2636d'
                             field: 'record_id'
+                        }
+                    },
+                    {
+                        table: 'sys_variable_value'
+                        id: 'ff8362bd32204ccab89544802fae0fc7'
+                        key: {
+                            document_key: 'f48f3f403cd44e8cb7941e243bc319ab'
+                            variable: 'e216835dffdf3210f972ffffffffff53'
                         }
                     },
                 ]
