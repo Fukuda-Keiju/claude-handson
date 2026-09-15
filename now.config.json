@@ -1,0 +1,6 @@
+{
+    "scope": "x_2221398_handson",
+    "scopeId": "b65ff6a029454f728ae3d7f000254955",
+    "name": "Claude Handson",
+    "tsconfigPath": "./src/server/tsconfig.json"
+}
