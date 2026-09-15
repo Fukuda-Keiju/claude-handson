@@ -1,0 +1,152 @@
+/* 件数サマリ。色・余白はすべて tokens.css の --tb-* を参照する（直値を書かない）。 */
+.stat-tiles {
+    display: flex;
+    align-items: center;
+    gap: var(--tb-space-md);
+    flex-wrap: wrap;
+}
+
+/* タイルは grid で等幅に並べる。auto-fit + minmax にすると
+   画面が狭いときに自動で 2 列 → 1 列へ折り返す。 */
+.stat-tiles__grid {
+    flex: 1 1 320px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--tb-space-md);
+}
+
+/* Card 本体には class を渡せないので、中身の div でレイアウトと選択状態を表現する */
+.stat-tiles__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tb-space-xs);
+    /* 選択時に出す枠線ぶんの余白を最初から確保して、切り替えでガタつかせない */
+    border: 2px solid transparent;
+    border-radius: var(--tb-radius-sm);
+    padding: var(--tb-space-sm);
+    transition: border-color var(--tb-duration) var(--tb-ease),
+        background-color var(--tb-duration) var(--tb-ease);
+}
+
+/* 選択中のタイルはアクセント色の枝線 + 淡い背景で「今ここ」を示す */
+.stat-tiles__body--selected {
+    border-color: var(--tb-accent);
+    background: var(--tb-accent-soft);
+}
+
+.stat-tiles__head {
+    display: flex;
+    align-items: center;
+    gap: var(--tb-space-xs);
+    min-width: 0;
+}
+
+/* 状態カラーの丸ドット。色だけに頼らずラベルも併記しているので aria-hidden でよい */
+.stat-tiles__dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--tb-text-tertiary);
+}
+
+.stat-tiles__dot--all {
+    background: var(--tb-accent);
+}
+
+.stat-tiles__dot--open {
+    background: var(--tb-state-open);
+}
+
+.stat-tiles__dot--in_progress {
+    background: var(--tb-state-in-progress);
+}
+
+.stat-tiles__dot--done {
+    background: var(--tb-state-done);
+}
+
+/* ラベルは控えめに。主役は数字。 */
+.stat-tiles__label {
+    font-family: var(--tb-font);
+    font-size: var(--tb-font-size-sm);
+    color: var(--tb-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-tiles__count {
+    font-family: var(--tb-font);
+    font-size: var(--tb-font-size-xl);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--tb-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* 読み込み中のスケルトン。数字 1 行ぶんの高さを占有して跳ねを防ぐ */
+.stat-tiles__skeleton {
+    display: block;
+    width: 2.5ch;
+    height: calc(var(--tb-font-size-xl) * 1.2);
+    border-radius: var(--tb-radius-sm);
+    background: linear-gradient(
+        90deg,
+        var(--tb-bg-subtle) 25%,
+        var(--tb-border) 37%,
+        var(--tb-bg-subtle) 63%
+    );
+    background-size: 400% 100%;
+    animation: stat-tiles-shimmer 1.4s ease infinite;
+}
+
+@keyframes stat-tiles-shimmer {
+    0% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+/* 動きを抑える設定のユーザーにはアニメーションを止める */
+@media (prefers-reduced-motion: reduce) {
+    .stat-tiles__skeleton {
+        animation: none;
+    }
+}
+
+.stat-tiles__overdue {
+    flex: none;
+    display: flex;
+    align-items: center;
+}
+
+/* 狭い幅では 2 列に畳む（仕様の 900px を境にする） */
+@media (max-width: 899px) {
+    .stat-tiles__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat-tiles__overdue {
+        width: 100%;
+    }
+}
+
+/* Card 内部のボタンは Shadow DOM の中にあり直接は狙えない。
+   :focus-within は Shadow ホストにも効くので、外側からフォーカス表示を足す。 */
+.stat-tiles__grid > *:focus-within .stat-tiles__body {
+    border-color: var(--tb-accent);
+    outline: 2px solid var(--tb-accent);
+    outline-offset: 2px;
+}
+
+/* ホバーでも触れることが分かるように淡く反応させる */
+.stat-tiles__grid > *:hover .stat-tiles__body {
+    background: var(--tb-bg-subtle);
+}
+
+.stat-tiles__grid > *:hover .stat-tiles__body--selected {
+    background: var(--tb-accent-soft);
+}

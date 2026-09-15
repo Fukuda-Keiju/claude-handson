@@ -17,16 +17,23 @@ await user.tab() // blur して値をコミットする
 const dirtyAlerts = await screen.findAllByText('未保存の変更があります', { timeout: 15000 })
 expect(dirtyAlerts.length).toBeGreaterThanOrEqual(1)
 
-// 保存は「More Actions」メニューの中の「Save」
-const moreActions = await screen.findByRole('button', {
-    name: 'More Actions',
-    exact: true,
-    timeout: 15000,
-})
-await user.click(moreActions)
+// 保存ボタンはアクションバーの幅で出方が変わる。
+// 広いときは「Save」ボタンがそのまま出る。狭いときは「More Actions」メニューの中に畳まれる。
+// どちらでも動くよう、まず Save ボタンを探し、無ければメニューを開く。
+const directSave = await screen.queryByRole('button', { name: 'Save', exact: true })
+if (directSave) {
+    await user.click(directSave)
+} else {
+    const moreActions = await screen.findByRole('button', {
+        name: 'More Actions',
+        exact: true,
+        timeout: 15000,
+    })
+    await user.click(moreActions)
 
-const saveItem = await screen.findByRole('menuitem', { name: 'Save', exact: true, timeout: 15000 })
-await user.click(saveItem)
+    const saveItem = await screen.findByRole('menuitem', { name: 'Save', exact: true, timeout: 15000 })
+    await user.click(saveItem)
+}
 
 // 保存に成功すると詳細画面へ切り替わる（フォーム自体は作成画面と同じ見た目）
 await screen.findByRole('button', { name: '← 一覧へ戻る', timeout: 15000 })

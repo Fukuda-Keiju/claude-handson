@@ -1,12 +1,56 @@
-/* 一覧画面のレイアウト。色や余白は Horizon(Polaris) の CSS 変数を使うと
-   インスタンスのテーマ・ダークモードに自動で追従する。 */
+/* 一覧画面。白いパネルにまとめて、ボード側のカードと見た目の質感をそろえる。
+   色・余白・角丸・影は tokens.css の --tb-* だけを参照する。 */
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: var(--now-spacing-md, 16px);
+    gap: var(--tb-space-md);
+    padding: var(--tb-space-md) var(--tb-space-md) var(--tb-space-lg);
+    background-color: var(--tb-bg-surface);
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius-md);
+    box-shadow: var(--tb-shadow-sm);
+}
+
+/* 上部ツールバー。今は絞り込みだけだが、将来ボタンを足せるよう左右に分ける */
+.task-list__toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--tb-space-md);
+    padding-block-end: var(--tb-space-sm);
+    border-bottom: 1px solid var(--tb-border);
 }
 
 /* 絞り込み Select は幅を抑えて左寄せにする */
 .task-list__filter {
     max-width: 280px;
+    flex: 1 1 auto;
+}
+
+/* 一覧本体。overflow: hidden は使わない（一覧内のドロップダウンが切れるため）。
+   角丸の代わりにわずかな余白で、パネルの内側にあることを示す。 */
+.task-list__body {
+    padding-inline: var(--tb-space-xs);
+}
+
+/* キーボード操作でも現在位置が分かるようにアウトラインを付ける */
+.task-list :focus-visible {
+    outline: 2px solid var(--tb-accent);
+    outline-offset: 2px;
+    border-radius: var(--tb-radius-sm);
+}
+
+@media (max-width: 899px) {
+    .task-list {
+        padding: var(--tb-space-sm) var(--tb-space-sm) var(--tb-space-md);
+    }
+
+    .task-list__toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .task-list__filter {
+        max-width: none;
+    }
 }

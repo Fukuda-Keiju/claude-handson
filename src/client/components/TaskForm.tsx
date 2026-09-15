@@ -14,15 +14,19 @@ const TABLE = 'x_2221398_handson_task'
 export interface TaskFormProps {
     /** 既存レコードの sys_id。新規作成は '-1'（null / undefined は不可） */
     sysId: string
+    /** 戻るボタンのラベル。呼び出し元が from に応じて決める（ボード / 一覧） */
+    backLabel: string
+    /** パネル右上に出す小見出し（例: 'タスクを編集' / '新しいタスク'） */
+    heading: string
     /** 保存成功後に呼ばれる。引数は保存されたレコードの sys_id */
     onSaved: (sysId: string) => void
-    /** 「一覧へ戻る」が確定したときに呼ばれる */
+    /** 「戻る」が確定したときに呼ばれる */
     onBack: () => void
 }
 
 // RecordProvider の「内側」に置く本体。useRecord は Provider の内側でしか使えないため、
 // 戻るボタンや未保存判定はこの子コンポーネントに書く。
-function TaskFormBody(props: { onBack: () => void }): JSX.Element {
+function TaskFormBody(props: { backLabel: string; heading: string; onBack: () => void }): JSX.Element {
     const { form } = useRecord()
     const [confirming, setConfirming] = useState(false)
     // 未保存判定は自前の差分比較ではなく RecordProvider が持つ isDirty だけを使う。
@@ -40,7 +44,7 @@ function TaskFormBody(props: { onBack: () => void }): JSX.Element {
     }, [isDirty])
 
     const handleBackClicked = useCallback(() => {
-        // 未保存なら確認モーダル、そうでなければそのまま一覧へ。
+        // 未保存なら確認モーダル、そうでなければそのまま戻る。
         if (isDirty) setConfirming(true)
         else props.onBack()
     }, [isDirty, props])
@@ -51,9 +55,13 @@ function TaskFormBody(props: { onBack: () => void }): JSX.Element {
     }, [props])
 
     return (
-        <div className="task-form">
+        <section className="task-form">
             <div className="task-form__toolbar">
-                <Button label="← 一覧へ戻る" variant="secondary" onClicked={handleBackClicked} />
+                <Button label={props.backLabel} variant="secondary" onClicked={handleBackClicked} />
+                {/* ここは Heading コンポーネントを使わない。heading ロールが増えると
+                    ATF の findByRole('heading', { name: 'Handson Task ボード' }) が
+                    複数一致で落ちる可能性があるため、ただのテキストで見せる。 */}
+                <p className="task-form__heading">{props.heading}</p>
             </div>
             {isDirty && (
                 <div className="task-form__alert">
@@ -68,7 +76,7 @@ function TaskFormBody(props: { onBack: () => void }): JSX.Element {
                 onDiscard={handleDiscard}
                 onCancel={() => setConfirming(false)}
             />
-        </div>
+        </section>
     )
 }
 
@@ -93,7 +101,7 @@ export default function TaskForm(props: TaskFormProps): JSX.Element {
             isReadOnly={false}
             onFormSubmitCompleted={handleSubmitCompleted}
         >
-            <TaskFormBody onBack={props.onBack} />
+            <TaskFormBody backLabel={props.backLabel} heading={props.heading} onBack={props.onBack} />
         </RecordProvider>
     )
 }

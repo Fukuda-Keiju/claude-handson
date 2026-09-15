@@ -1,15 +1,39 @@
-/* ページ全体の余白と背景だけを整える最小スタイル。
-   色や余白は Horizon(Next Experience) の CSS 変数を使い、
-   未定義のテーマでも崩れないよう fallback を重ねている。 */
+/* ページ全体の骨組み。色・余白・角丸は tokens.css の --tb-* だけを参照する
+   （Horizon の変数に追従しつつ、変数が無い環境でも fallback で崩れない）。 */
 .task-board {
-    padding: var(--now-spacing--lg, var(--now-static-space--lg, 24px));
-    background-color: var(--now-color_background--primary, #ffffff);
-    color: var(--now-color_text--primary, #2e3338);
     min-block-size: 100vh;
+    background-color: var(--tb-bg-page);
+    color: var(--tb-text);
+    font-family: var(--tb-font);
+    font-size: var(--tb-font-size-md);
     box-sizing: border-box;
 }
 
-/* 見出しと本文（一覧・フォーム）の間隔 */
-.task-board__content {
-    margin-block-start: var(--now-spacing--md, var(--now-static-space--md, 16px));
+.task-board *,
+.task-board *::before,
+.task-board *::after {
+    box-sizing: inherit;
+}
+
+/* 本文。広いモニタでも間延びしないよう最大幅で中央寄せする */
+.task-board__main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--tb-space-lg);
+    display: flex;
+    flex-direction: column;
+    /* タイル / タブ / 本文のセクション間隔 */
+    gap: var(--tb-space-lg);
+}
+
+/* タブは直下の本文と近づけたいので、gap を打ち消して少しだけ詰める */
+.task-board__tabs {
+    margin-block-end: calc(-1 * var(--tb-space-sm));
+}
+
+@media (max-width: 899px) {
+    .task-board__main {
+        padding: var(--tb-space-md);
+        gap: var(--tb-space-md);
+    }
 }

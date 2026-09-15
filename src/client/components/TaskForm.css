@@ -1,15 +1,53 @@
-/* フォーム画面のごく最小限のレイアウト。CSS Modules は使えないので通常の CSS。 */
+/* フォーム画面。一覧と同じ白いパネルに載せて、画面間で質感をそろえる。
+   CSS Modules は使えないので通常の CSS（クラス名は BEM 風に衝突を避ける）。 */
 .task-form {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--tb-space-md);
+    padding: var(--tb-space-md) var(--tb-space-lg) var(--tb-space-lg);
+    background-color: var(--tb-bg-surface);
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius-md);
+    box-shadow: var(--tb-shadow-sm);
 }
 
+/* 上部ツールバー。左に戻るボタン、右に「今どちらの操作中か」を示す小さなテキスト */
 .task-form__toolbar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
+    justify-content: space-between;
+    gap: var(--tb-space-sm);
+    padding-block-end: var(--tb-space-sm);
+    border-bottom: 1px solid var(--tb-border);
+}
+
+/* 見出し風のテキスト。見出し(h1〜h6)にはしない（ATF の heading 検索を 1 件に保つため） */
+.task-form__heading {
+    margin: 0;
+    font-size: var(--tb-font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--tb-text-secondary);
 }
 
 .task-form__alert {
-    margin-bottom: 12px;
+    margin: 0;
+}
+
+/* キーボード操作でも現在位置が分かるようにアウトラインを付ける */
+.task-form :focus-visible {
+    outline: 2px solid var(--tb-accent);
+    outline-offset: 2px;
+    border-radius: var(--tb-radius-sm);
+}
+
+@media (max-width: 899px) {
+    .task-form {
+        padding: var(--tb-space-sm) var(--tb-space-md) var(--tb-space-md);
+    }
+
+    .task-form__toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

@@ -1,8 +1,8 @@
 // Handson Task ボード（React UI Page）の一覧と絞り込みを検証する UI Test Script。
 // screen / user / sn_atf / expect / waitFor はテスト実行時に自動で使えるので import は不要。
 
-// 1. まず UI Page を開く（相対 URL にしておくと、どのインスタンスでも動く）
-await sn_atf.navigate('/x_2221398_handson_task_board.do')
+// 1. まず UI Page の一覧ビューを開く（初期表示は Kanban ボードなので ?view=list を明示する。相対 URL にしておくと、どのインスタンスでも動く）
+await sn_atf.navigate('/x_2221398_handson_task_board.do?view=list')
 
 // 2. 画面の見出しが出るまで待つ。React の描画は非同期なので timeout を長めに取る
 await screen.findByRole('heading', {

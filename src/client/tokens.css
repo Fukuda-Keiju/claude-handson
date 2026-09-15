@@ -1,0 +1,88 @@
+/* デザイントークン。Horizon(Next Experience) の CSS 変数を第一候補にし、
+   ※ Horizon の --now-color_* は色ではなく RGB 三つ組（例 "3,45,66"）で定義されているため、
+      必ず rgb(var(--now-..., r, g, b)) の形で包む。var() を直接色として使うと無効値になり背景が消える。
+   未定義の環境（クラシック UI 単体表示など）でも崩れないよう fallback を重ねる。
+   各コンポーネントの CSS はここで定義した --tb-* だけを参照する。 */
+:root {
+    /* 余白 */
+    --tb-space-xs: 4px;
+    --tb-space-sm: 8px;
+    --tb-space-md: 16px;
+    --tb-space-lg: 24px;
+    --tb-space-xl: 32px;
+
+    /* 角丸・影 */
+    --tb-radius-sm: 8px;
+    --tb-radius-md: 12px;
+    --tb-radius-lg: 16px;
+    --tb-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+    --tb-shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06);
+    --tb-shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
+
+    /* 面の色 */
+    --tb-bg-page: rgb(var(--now-color_background--secondary, 243, 245, 248));
+    --tb-bg-surface: rgb(var(--now-color_background--primary, 255, 255, 255));
+    --tb-bg-subtle: rgb(var(--now-color_background--tertiary, 234, 238, 243));
+    --tb-border: rgb(var(--now-color_border--secondary, 223, 227, 232));
+    --tb-border-strong: rgb(var(--now-color_border--primary, 197, 204, 212));
+
+    /* 文字色 */
+    --tb-text: rgb(var(--now-color_text--primary, 27, 36, 48));
+    --tb-text-secondary: rgb(var(--now-color_text--secondary, 91, 102, 114));
+    --tb-text-tertiary: rgb(var(--now-color_text--tertiary, 138, 148, 160));
+    --tb-text-on-accent: #ffffff;
+
+    /* アクセント（ブランド） */
+    --tb-accent: rgb(var(--now-color_brand--primary, 15, 95, 209));
+    --tb-accent-soft: rgb(var(--now-color_background--tertiary, 227, 237, 251));
+
+    /* 状態カラー（Kanban 列・バッジ・タイルで共通に使う） */
+    --tb-state-open: #2f6fed;
+    --tb-state-open-soft: #e6eefc;
+    --tb-state-in-progress: #d97706;
+    --tb-state-in-progress-soft: #fdf1df;
+    --tb-state-done: #16a34a;
+    --tb-state-done-soft: #e5f6ea;
+    --tb-danger: rgb(var(--now-color_alert--critical, 217, 45, 32));
+    --tb-danger-soft: #fdecea;
+
+    /* タイポグラフィ */
+    --tb-font: var(--now-font-family, 'Lato', 'Helvetica Neue', Arial, 'Hiragino Sans', 'Noto Sans JP', sans-serif);
+    --tb-font-size-xs: 11px;
+    --tb-font-size-sm: 12px;
+    --tb-font-size-md: 14px;
+    --tb-font-size-lg: 16px;
+    --tb-font-size-xl: 22px;
+
+    /* アニメーション */
+    --tb-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --tb-duration: 160ms;
+}
+
+/* ダークモード（Horizon の変数が無い環境向けの fallback だけを差し替える） */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --tb-bg-page: rgb(var(--now-color_background--secondary, 17, 24, 39));
+        --tb-bg-surface: rgb(var(--now-color_background--primary, 31, 41, 55));
+        --tb-bg-subtle: rgb(var(--now-color_background--tertiary, 39, 50, 68));
+        --tb-border: rgb(var(--now-color_border--secondary, 55, 65, 81));
+        --tb-border-strong: rgb(var(--now-color_border--primary, 75, 85, 99));
+        --tb-text: rgb(var(--now-color_text--primary, 243, 244, 246));
+        --tb-text-secondary: rgb(var(--now-color_text--secondary, 184, 192, 204));
+        --tb-text-tertiary: rgb(var(--now-color_text--tertiary, 139, 149, 163));
+        --tb-accent-soft: rgb(var(--now-color_background--tertiary, 30, 58, 138));
+        --tb-state-open-soft: #1e3a8a;
+        --tb-state-in-progress-soft: #78350f;
+        --tb-state-done-soft: #14532d;
+        --tb-danger-soft: #7f1d1d;
+        --tb-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --tb-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+        --tb-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --tb-duration: 0ms;
+    }
+}

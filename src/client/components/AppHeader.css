@@ -1,0 +1,74 @@
+/* 固定ヘッダー。スクロールしても操作ボタンが見えるよう sticky にする。
+   色・余白・角丸はすべて tokens.css の --tb-* を参照する。 */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: var(--tb-bg-surface);
+    border-bottom: 1px solid var(--tb-border);
+}
+
+.app-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--tb-space-md);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--tb-space-md) var(--tb-space-lg);
+    box-sizing: border-box;
+}
+
+.app-header__identity {
+    display: flex;
+    align-items: center;
+    gap: var(--tb-space-md);
+    min-width: 0;
+}
+
+/* アプリアイコン風の角丸スクエア。画像を持ち込まず CSS グラデーションだけで作る */
+.app-header__mark {
+    flex: 0 0 auto;
+    inline-size: 36px;
+    block-size: 36px;
+    border-radius: var(--tb-radius-sm);
+    background-image: linear-gradient(135deg, var(--tb-accent), var(--tb-state-done));
+    box-shadow: var(--tb-shadow-sm);
+}
+
+.app-header__titles {
+    min-width: 0;
+}
+
+.app-header__subtitle {
+    margin: var(--tb-space-xs) 0 0;
+    font-size: var(--tb-font-size-sm);
+    color: var(--tb-text-secondary);
+}
+
+.app-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--tb-space-sm);
+    flex: 0 0 auto;
+}
+
+/* キーボード操作でも現在位置が分かるようにアウトラインを付ける */
+.app-header :focus-visible {
+    outline: 2px solid var(--tb-accent);
+    outline-offset: 2px;
+    border-radius: var(--tb-radius-sm);
+}
+
+/* 900px 未満では縦積みにして、狭い画面でもボタンが潰れないようにする */
+@media (max-width: 899px) {
+    .app-header__inner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--tb-space-md);
+    }
+
+    .app-header__actions {
+        justify-content: flex-end;
+    }
+}
