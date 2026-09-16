@@ -32,6 +32,8 @@ Remove-Item $tmpZip -Force; Remove-Item $tmpDir -Recurse -Force
 # 無ければ build が新しい ID を採る。
 $keys = Join-Path $Kit 'todo-app\src\fluent\generated\keys.ts'
 if (Test-Path $keys) { Remove-Item $keys -Force }
+# 参加者が 43 分に Claude Code で修正するときの説明書（ルール・ファイル配置・API の注意）
+Copy-Item (Join-Path $ThemeB 'kit\todo-app-CLAUDE.md') (Join-Path $Kit 'todo-app\CLAUDE.md')
 # scopeId は setup.ps1 が採り直すので空にしておく
 $cfgPath = Join-Path $Kit 'todo-app\now.config.json'
 $cfg = Get-Content $cfgPath -Raw | ConvertFrom-Json

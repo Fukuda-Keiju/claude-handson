@@ -43,7 +43,8 @@
 | 配布物 | **参加者キット**（zip。GitHub の Release にも置く）。中身: `todo-app/`（欠陥版のスナップショット）、`atf-tests/`（空の Fluent プロジェクト + `CLAUDE.md`）、`fix/`（修正版の 3 ファイル）、`setup.ps1`、`fix.ps1`、`preflight.ps1`、`README.md` | git clone を初学者にやらせない。zip なら「展開して 1 コマンド」で済む |
 | スコープ接頭辞の書き換え | **`setup.ps1` が自動で行う。** 参加者の PDI から会社コードを読み、`x_2221398_todo` → `x_<code>_todo`、`x_2221398_atf` → `x_<code>_atf` に全ファイル置換し、`now-sdk init` を一時フォルダで走らせて scopeId を採る | 他社の接頭辞のアプリは PDI が「third party application」として **インストールを拒否する**（2026-09-16 に確認）。書き換え自体は 1 秒 |
 | 欠陥 | 本編と同じ「タイトル空欄で保存できる」 | 既に検証済み（正しい版 5/5、欠陥版 3/5） |
-| アプリの修正 | **参加者自身が `fix.ps1` → build → deploy。** `fix.ps1` は `fix/` の 3 ファイル（`validate-title.ts`、`TodoForm.tsx`、`todo-item.now.ts`）を上書きコピーするだけ | 自分の PDI なので衝突しない。「テストが欠陥を見つけ、直して、再テストで確かめる」を 1 人で完結できる |
+| アプリの修正 | **参加者自身が `todo-app/` で Claude Code にプロンプト③（守られていない仕様の 1 行 + 赤の Output）を打って直し、build → deploy。** `fix.ps1` は時間切れ・build 失敗時の予備で、`fix/` の 3 ファイル（`validate-title.ts`、`TodoForm.tsx`、`todo-item.now.ts`）を上書きコピーするだけ | 自分の PDI なので衝突しない。テストを書かせたときと同じ「AI に何を渡すか」の構造で直す体験になる。「テストが欠陥を見つけ、直して、再テストで確かめる」を 1 人で完結できる |
+| アンケート | **なし。** その 1 分は修正ブロックに回し 43〜51 分にする | Claude Code での修正は `fix.ps1` より 3 分ほど長い |
 | ATF の実行 | 自分の PDI の画面から Run Test。**UI テストも各自で実行できる**（Client Test Runner は PDI ごと） | 待ち行列の問題がない |
 | PDI 側の前提 | `sn_atf.runner.enabled` と `sn_atf.schedule.enabled` を true にする。**`setup.ps1` の最後で `set-atf-props.mjs` が Table API 経由で自動設定する**（失敗時だけ手動: `sys_properties.list`） | PDI の初期値は false。手動だと漏れやすい項目なので自動化した（2026-09-16 mypdi で動作確認） |
 | PDI の起床 | 開始 30 分前にログインしておく（事前案内で念押し） | PDI は放置で休止し、起こすのに数分かかる |
@@ -57,8 +58,9 @@ themeB-kit/
   preflight.ps1        # 事前チェック 12 項目（道具、キット、setup 済み、接続先、アプリ導入済み、ATF 設定）
   setup.ps1            # 会社コード取得 → 接頭辞置換 → scopeId 採取 → npm ci → build → deploy（todo-app）→ npm ci → build（atf-tests）→ ATF 設定
   set-atf-props.mjs    # setup.ps1 から呼ばれ、sn_atf.runner.enabled / schedule.enabled を true にする
-  fix.ps1              # fix/ の 3 ファイルを todo-app/src/ に上書きし、直した行を表示
+  fix.ps1              # 予備。fix/ の 3 ファイルを todo-app/src/ に上書きし、直した行を表示
   todo-app/            # 欠陥版（theme-b-buggy のスナップショット。keys.ts と node_modules なし）
+    CLAUDE.md          # 43 分に Claude Code で直すときの説明書（kit/todo-app-CLAUDE.md が元。ルール・ファイル配置・スコープ付き API の注意・画面の要素名）
   atf-tests/           # 空の Fluent プロジェクト + CLAUDE.md + docs/（spec.md は入れない）
   fix/src/...          # 修正版の 3 ファイル
   checkpoint/, solution/
@@ -191,31 +193,33 @@ Tests 一覧を F5。増えた Negative を Run Test。赤になったら「赤�
 ```
 投票 2、4 分類、Output の読み方は本編と同文。
 
-### 43〜50 分　**参加者自身がアプリを直す → 再テスト**（案C の見せ場）
+### 43〜51 分　**参加者自身が Claude Code でアプリを直す → 再テスト**（案C の見せ場）
 
-🗣「テストが欠陥を見つけました。今日は皆さん自身が開発者として直します。修正は 3 ファイルで、キットの fix フォルダに入っています。スクリプトで上書きして、アプリを送り直します。」
+🗣「テストが欠陥を見つけました。今日は皆さん自身が開発者として直します。直し方もテストと同じで、AI に何を渡すかが勝負です。渡すのは、守られていない仕様の 1 行と、赤くなったテストの Output の 2 つです。」
 
 👥
 ```
-【直す】themeB-kit を「ターミナルで開く」→
-  .\fix.ps1                （fix\ の 3 ファイルを todo-app に上書き。何が変わったか画面に出ます）
-  cd todo-app
-  npm run build
-  npm run deploy           （1 分半ほど）
+【直す】themeB-kit\todo-app を「ターミナルで開く」→ claude と打つ → プロンプト③（原稿 8 章）を貼る。
+  「build が通りました」まで待つ（3〜4 分）。
+【送る】npm run build → npm run deploy（1 分ほど）
 【再テスト】Tests 一覧で Negative → 緑。Positive 3 本 → 緑のまま。全部緑で「緑緑」とチャットに。
 ```
 
-🖱 講師は `fix.ps1` の出力（差分 3 ファイル）を画面共有し、`validate-title.ts` を開いて **Business Rule の 3 行**（空タイトルなら `setAbortAction(true)` で保存を止める）を読み上げる。「直したのはこれだけです。テストがなければ誰も気づきませんでした。」
+プロンプト③の全文と実況のセリフは `theme-b-script-planC.md` 8 章。要点は「仕様 1 の文 + Output『Inserted record ... when insert was expected to fail』を渡し、サーバー側（Business Rule で `setAbortAction`）・画面側（フォームで空欄を止める）・テーブル定義（`mandatory: true`）の 3 か所を直させ、既存の動きは変えない、deploy はしない」。
 
-⏱ build 22 秒 + deploy 20 秒 + 再テスト 4 本で **3〜4 分**。50 分に間に合う。
+🖱 講師も同じプロンプト③を打ち、AI が `validate-title.ts` を書き換えた瞬間に **Business Rule の 3 行**（空タイトルなら `addErrorMessage` → `setAbortAction(true)` で保存を止める）を画面で読み上げる。「直したのはこれだけです。テストがなければ誰も気づきませんでした。」
+
+⏱ プロンプト③ 3〜4 分 + build 22 秒 + deploy 20 秒 + 再テスト 4 本 2 分で **7〜8 分**。**47 分の時点で build が通っていない人が多ければ、迷わず予備の `fix.ps1` に切り替える**（`.\fix.ps1` → `cd todo-app` → build → deploy。中身は AI が書くはずだった同じ 3 ファイル）。
 
 🆘
+- 47 分までに修正が終わらない、build が落ちる → 予備の `fix.ps1`。
+- Positive が赤になった → AI が既存の動きを壊した。回帰確認の実例として紹介し、`fix.ps1` で上書きして再 deploy。
 - deploy が失敗 → エラー先頭 3 行をチャットに貼らせる。多いのは「scopeId がない」（`now.config.json` を setup が書き換えていない）。時間がなければ講師の画面で結果を見せる。
-- 再テストしても Negative が赤 → deploy 完了前に押している。30 秒待って再度。
+- 再テストしても Negative が赤 → deploy 完了前に押している。30 秒待って再度。それでも赤なら `validate-title.ts` に `setAbortAction` があるか見る。無ければ `fix.ps1`。
 
-### 50〜54 / 54〜55 / 55〜60
+### 51〜55 / 55〜60
 
-本編と同文（振り返り、アンケート、講師の学びと反省）。振り返りの問いに 1 つ足す:
+本編と同文（振り返り、講師の学びと反省）。**アンケートは行わない**（54〜55 分の枠は修正ブロックに吸収）。振り返りの問いに 1 つ足す:
 ```
 自分でアプリを直して再テストしたとき、何を感じましたか。1 行。
 ```
@@ -226,9 +230,10 @@ Tests 一覧を F5。増えた Negative を Run Test。赤になったら「赤�
 
 1. 振り返りを 2 分に。
 2. 55〜60 を 3 分に（ゼロにしない）。
-3. **43〜50 の参加者による修正をやめ、講師の実演だけにする**（案C の見せ場だが、build+deploy の 2 分が惜しいときはここ）。
+3. **43〜51 のプロンプト③をやめ、`fix.ps1` で上書きして build → deploy にする**（3 分短縮。参加者が自分で直す体験は残る）。
 4. 35〜43 のプロンプト②をやめ、Solution の Negative をコピーして deploy。
-5. 投票 1 を省く。
+5. 43〜51 の参加者による修正を全部やめ、講師の実演だけにする（3 番でも間に合わないときだけ）。
+6. 投票 1 を省く。
 
 ---
 
