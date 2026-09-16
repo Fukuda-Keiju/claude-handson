@@ -414,7 +414,7 @@ deploy の最後に成功のメッセージが出たら「入りました。再�
 🗣 **言う（全員が緑になったら）**
 「Negative が緑になった。それだけでは足りません。Positive が緑のままであることも確認しました。直したつもりで別の所を壊していないか、これを回帰確認と言います。テストが自動になっていると、この確認がボタン 1 つでできます。皆さんは今日、AI にテストを書かせて欠陥を見つけ、AI に指示して直し、再テストで確かめる、この一巡りを一人で終えました。テストを書くときも直すときも、皆さんがしたのは『何を渡すか』を決めることだけです。」
 
-⏱ プロンプト③ 3〜4 分 + build 約 22 秒 + deploy 約 20 秒 + 再テスト 4 本 2 分で **7〜8 分**。47 分の ✅ で build が通っていない人が多ければ、迷わず下の予備（`fix.ps1`）に切り替える。49 分を過ぎたら再テストは Negative 1 本 + Positive 1 本に減らす。
+⏱ プロンプト③ 3〜4 分 + build 約 22 秒 + deploy 約 20 秒 + 再テスト 4 本 2 分で **7〜8 分**。**実測（2026-09-16、キットの todo-app で非対話実行）: プロンプト③ 116 秒で 3 ファイルちょうどを修正、build 13 秒、deploy 17 秒、API の空タイトル insert が 403 で拒否、ATF の Negative が赤 → 緑。** 参加者は Yes を押す分だけ長くなるので 3〜4 分の見立てのまま。47 分の ✅ で build が通っていない人が多ければ、迷わず下の予備（`fix.ps1`）に切り替える。49 分を過ぎたら再テストは Negative 1 本 + Positive 1 本に減らす。
 
 🆘
 - 47 分になっても Claude Code の修正が終わらない、または build が落ちる → 予備に切り替える。次を貼る。
@@ -525,7 +525,7 @@ deploy の最後に成功のメッセージが出たら「入りました。再�
 | `npm run deploy` で `scopeId` がない | `now.config.json` の scopeId | `.\setup.ps1 -SkipNpm -SkipInstall`（atf-tests 側）/ `.\setup.ps1 -SkipNpm`（todo-app 側） |
 | deploy で「Unable to install application as application was null」 | 接頭辞が会社コードと違う | `.\setup.ps1` をやり直す。手で見るなら `now-sdk query sys_properties -q "name=glide.appcreator.company.code" -f value --auth mypdi` |
 | Run Test で Runner が開かない | ポップアップブロック | 許可して再度 Run Test。または All → Automated Test Framework → Client Test Runner を手で開く |
-| UI テストが動かない（Pending のまま） | `sn_atf.runner.enabled` | 自分の PDI で All → `sys_properties.list` → 2 つを true |
+| UI テストが動かない（Pending のまま） | `sn_atf.runner.enabled` | キットのフォルダで `node set-atf-props.mjs mypdi`（setup.ps1 が最後に自動で行う処理と同じ）。動かなければ自分の PDI で All → `sys_properties.list` → 2 つを true |
 | UI テストだけ「要素が見つからない」で赤 | PDI のバージョン差（4 分類の②） | 時間内は無視し、サーバー側で進む。終了後に調べる |
 | Negative が緑になる（欠陥版なのに） | テストが「保存できる」を期待 | Solution の T4 を渡す。「プロダクト起点の罠」の実例として言及 |
 | プロンプト③の修正が 47 分までに終わらない、build が落ちる | | 予備の `fix.ps1` に切り替え（8 章 🆘 の文を貼る） |

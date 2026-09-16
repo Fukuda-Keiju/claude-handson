@@ -244,7 +244,7 @@ Tests 一覧を F5。増えた Negative を Run Test。赤になったら「赤�
 | install で `Unable to install application as application was null` | 接頭辞が PDI の会社コードと合っていない（third party として拒否） | `setup.ps1` をやり直す。手で直すなら `now-sdk query sys_properties -q "name=glide.appcreator.company.code" -f value` で会社コードを確認 |
 | build で `scopeId` がないと言われる | `now.config.json` の scopeId が空 | `setup.ps1` の init 工程が失敗している。一時フォルダで `now-sdk init --scopeName x_<code>_todo ...` を打ち、出てきた `scopeId` を貼る |
 | PDI にログインできない・遅い | PDI が休止中 | 起きるまで待つ。5 分以上なら視聴者役へ |
-| Run Test で UI テストが動かない | `sn_atf.runner.enabled` が false | 自分の PDI で `sys_properties.list` → 2 つを true。事前課題の項目だが漏れやすい |
+| Run Test で UI テストが動かない | `sn_atf.runner.enabled` が false | キットのフォルダで `node set-atf-props.mjs mypdi`（setup.ps1 の最終工程と同じ）。動かなければ自分の PDI で `sys_properties.list` → 2 つを true |
 | 画面のテストだけ失敗（要素が見つからない） | PDI のバージョン差で画面部品の名前が違う | 4 分類の②。時間内は無視し、サーバー側 3 本で進める。終了後に調べる |
 | 他人と結果が違う | 各自の PDI なので当然。欠陥版が入っていない可能性 | ボードで空タイトル保存を試させて確認（**35 分以降だけ**） |
 | 事前課題をしていない人が当日来た | | 視聴者役へ。統一版のように講師 PDI へログインさせる手もあるが、混ぜると進行が割れるので **しない** |
@@ -252,6 +252,18 @@ Tests 一覧を F5。増えた Negative を Run Test。赤になったら「赤�
 ---
 
 ## 6. 未確認事項（別 PDI での通しで確かめる）
+
+**確認済み（2026-09-16、講師 PDI の検証用スコープ `x_2221398_todo2` / `x_2221398_atf2` で、キット zip を展開した状態から通し）**
+
+| 工程 | 結果 |
+|---|---|
+| `setup.ps1 -ScopeSuffix 2`（zip 展開直後、node_modules なし） | 成功。全体 292 秒。21 ファイル / 48 か所を置換、todo-app の `CLAUDE.md` も書き換わった |
+| 欠陥版の確認 | Table API で空タイトル insert が HTTP 201（通ってしまう）。ATF「空タイトルはサーバーで拒否される (Negative)」が **failure** |
+| プロンプト③（`claude -p`、編集と `npm run build` のみ許可） | **116 秒**。変更は `validate-title.ts` / `TodoForm.tsx` / `todo-item.now.ts` の 3 ファイルちょうど。既存の trim 処理・他の列・デモデータは無変更。build 成功。deploy はしなかった（指示どおり） |
+| build → deploy | 13 秒 + 17 秒 |
+| 修正後の確認 | 空タイトル・空白のみの insert が **HTTP 403**（`aborted by Business Rule 'Validate Todo title'`）。通常タイトルは 201 で `state=open`。同じ ATF Negative が **success** |
+
+参加者は対話モードで Yes を押しながら進むので、原稿の見立て（プロンプト③ 3〜4 分）は変えていない。検証で出た rollback: atf2 の T4 追加 `8c989622c35783508532bd0ed4013181`、todo2 の修正版 deploy `41f85662c35783508532bd0ed40131ff`（todo2 は現在**修正版**）。
 
 - `setup.ps1` を **講師以外の PDI** で通したことがない。講師 PDI では会社コードが同じなので、接頭辞の書き換えは「末尾に 2 を付ける」形でしか確かめていない。会社コードが違う PDI で 1 回通す（最重要）。
 - UI テスト T2 / T5 を書き換え後のアプリ（`x_<code>_todo_board.do`）に対して実行していない。
