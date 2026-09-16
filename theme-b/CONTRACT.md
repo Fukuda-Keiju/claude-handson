@@ -31,7 +31,7 @@
 | `completed_at` | DateTime | `Completed at` | readOnly（Business Rule が書く） |
 | `notes` | MultiLineText | `Notes` | |
 
-デモレコード（installMethod `demo`）2 件: `Fluent SDK で Table を定義する`（done, due 2026-09-10）, `React で画面を作る`（in_progress, due 2026-09-20）。
+デモレコード（installMethod `demo`）2 件: `9 月分の経費精算を提出する`（done, due 2026-09-10）, `新入社員向け PC セットアップ手順書を更新する`（in_progress, due 2026-09-20）。業務っぽいタイトルにしてある（2026-09-16 変更。テストはタイトル文字列に依存しない）。
 
 ## 3. Business Rule（ワーカー A）
 
