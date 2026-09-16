@@ -55,7 +55,7 @@ Record({
     $meta: { installMethod: 'demo' },
     table: 'x_2221398_todo_item',
     data: {
-        title: 'Fluent SDK で Table を定義する',
+        title: '9 月分の経費精算を提出する',
         state: 'done',
         due_date: '2026-09-10',
     },
@@ -66,7 +66,7 @@ Record({
     $meta: { installMethod: 'demo' },
     table: 'x_2221398_todo_item',
     data: {
-        title: 'React で画面を作る',
+        title: '新入社員向け PC セットアップ手順書を更新する',
         state: 'in_progress',
         due_date: '2026-09-20',
     },
