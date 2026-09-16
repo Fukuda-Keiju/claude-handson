@@ -1,8 +1,12 @@
 // セッション Cookie を now-sdk から取得してメモリ上だけで使う（ファイルには書かない）。
 import { execFileSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
+import { resolve, dirname } from 'node:path'
+// リポジトリのルート（このファイルは theme-b/tools/ にある）
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export function getCookies() {
     const out = execFileSync('npx.cmd', ['@servicenow/sdk', 'auth', '--print', 'mypdi', '--format', 'headers'], {
-        cwd: 'C:/Users/福田圭樹/Projects', encoding: 'utf8', shell: true, stdio: ['ignore', 'pipe', 'ignore'],
+        cwd: repoRoot, encoding: 'utf8', shell: true, stdio: ['ignore', 'pipe', 'ignore'],
     })
     const line = out.split(/\r?\n/).find(l => l.startsWith('Cookie:'))
     if (!line) throw new Error('Cookie header not found in auth --print output')

@@ -16,7 +16,8 @@
 | `handout/checkpoint/`, `handout/solution/` | 詰まった人に渡すテストファイル | 作成済み |
 | `slides/theme-b-slides.pptx` | スライド 5 枚、スピーカーノート付き（`npm run build` で再生成） | 作成済み。**PowerPoint で表示確認は未** |
 | `evidence/*.png` | スイート結果（5/5, 3/5）、テスト一覧、画面のスクリーンショット | 作成済み |
-| `tools/create-users.mjs` | 参加者ユーザー `handson01`〜`08`（admin）を作る。`node create-users.mjs <password>` | **未実行**（講師が自分のターミナルで実行する） |
+| `tools/create-users.mjs` | 参加者ユーザー `handson01`〜`08`・`11`〜`14`（admin）を作る。`node create-users.mjs <password>` | **未実行**（講師が自分のターミナルで実行する） |
+| `kit/` + `tools/build-kit.ps1` | **案C**（参加者ごとの PDI）用の参加者キット。`tools` で `.\build-kit.ps1` → `dist/kit/themeB-kit.zip`。台本は `../docs/theme-b-facilitator-guide-planC.md` | 作成済み。講師 PDI で別スコープ名（`x_2221398_todo2` / `atf2`）の擬似検証済み（サーバー側テスト 欠陥版 2/3 → fix 後 3/3）。**別 PDI での通しは未** |
 
 ## 当日までの残作業（講師）
 

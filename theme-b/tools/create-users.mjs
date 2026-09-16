@@ -1,4 +1,4 @@
-// 参加者ユーザー handson01〜08 を mypdi に作る（Table API）。既にあればパスワードを再設定。
+// 参加者ユーザー handson01〜08 と handson11〜14（12 組分。09・10 は講師用で作らない）を mypdi に作る（Table API）。既にあればパスワードを再設定。
 // 認証は now-sdk のセッション Cookie をメモリ上でだけ使う（auth.mjs）。
 import { getCookies } from './auth.mjs'
 
@@ -23,7 +23,8 @@ async function api(method, path, body) {
     return json.result
 }
 
-for (let i = 1; i <= 8; i++) {
+const SEATS = [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] // 番号札・zip と同じ番号
+for (const i of SEATS) {
     const nn = String(i).padStart(2, '0')
     const userName = `handson${nn}`
     const existing = await api('GET', `sys_user?sysparm_query=user_name=${userName}&sysparm_fields=sys_id`)
