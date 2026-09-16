@@ -1,6 +1,5 @@
 // 新規作成（?view=create）と詳細・編集（?view=detail）で共通に使うフォーム。
 // 2 つの画面はほとんど同じ入力欄なので、1 つの部品にまとめて mode で切り替える。
-// こうしておくと「タイトル必須チェック」を 1 か所だけに書けばよい（下の ★ の if 文）。
 import React, { useState } from 'react'
 import { createTodo, deleteTodo, STATE_LABEL, TODO_STATES, toErrorMessage, updateTodo } from '../api'
 import type { TodoRecord, TodoState } from '../api'
@@ -39,12 +38,6 @@ export default function TodoForm({ mode, todo, backLabel, onSaved, onDeleted, on
         // <form> の既定動作（ページ再読み込み）を止める
         event.preventDefault()
 
-        // ★ ここが仕様 1（タイトルは必須）の画面側の守り。欠陥版ではここを外す。
-        if (title.trim() === '') {
-            setError('タイトルは必須です')
-            return
-        }
-
         setBusy(true)
         setError('')
         try {
@@ -57,7 +50,7 @@ export default function TodoForm({ mode, todo, backLabel, onSaved, onDeleted, on
             }
             await onSaved()
         } catch (err) {
-            // Business Rule の abort（サーバー側のタイトル必須チェック）もここに入ってくる
+            // サーバー側でエラーになった場合はメッセージをそのまま表示する
             setError(toErrorMessage(err))
         } finally {
             setBusy(false)

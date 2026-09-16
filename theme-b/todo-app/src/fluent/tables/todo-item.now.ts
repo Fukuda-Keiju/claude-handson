@@ -22,13 +22,11 @@ export const x_2221398_todo_item = Table({
     display: 'title',
     audit: true,
     schema: {
-        // タスクのタイトル。フォーム上は必須（mandatory）だが、
-        // REST API やスクリプト経由の insert では mandatory は効かないので、
-        // サーバー側の守りは Business Rule「Validate Todo title」で行う。
+        // タスクのタイトル（表示名にも使う）。
         title: StringColumn({
             label: 'Title',
             maxLength: 100,
-            mandatory: true,
+            mandatory: false,
         }),
         // 進捗状態。choices のキーがデータベースに入る値、値が画面に出るラベル。
         state: ChoiceColumn({
