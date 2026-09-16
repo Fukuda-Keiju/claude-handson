@@ -50,7 +50,7 @@
 | 欠陥 | **タイトル空欄のタスクが保存できてしまう**（仕様: タイトル必須） | 画面を見ただけでは欠陥と分からない。Negative Test でしか見つからない |
 | アプリの修正 | 講師が代表して 1 回 deploy（`theme-b-fix` ブランチ） | 8 人が同じスコープへ同時 deploy すると衝突する |
 | 参加者の実行方法 | ServiceNow 画面の **Run Test ボタン** だけ。CLI は使わない | 覚えることを減らす |
-| 講義 | スライドは 3 枚だけ。残りは講師の Claude Code 生成を Zoom 共有しながら実況 | 視聴者にとっては「生成の様子」が一番面白い部分 |
+| 講義 | スライドは 5 枚だけ（`theme-b/slides/theme-b-slides.pptx`、スピーカーノート付き）。残りは講師の Claude Code 生成を Zoom 共有しながら実況 | 視聴者にとっては「生成の様子」が一番面白い部分 |
 | 投票 | Zoom 投票 3 回。会場の参加者はチャットに番号を書く | 待ち時間を予想ゲームに変える |
 | 発表 | 参加者と視聴者に別の問いを出し、チャットに 1 行で書く | 8 人 × 1 分では収まらない |
 
@@ -60,8 +60,8 @@
 
 | 日 | やること | 完了の印 |
 |---|---|---|
-| 火 9/16 | ① アプリ本体（`theme-b/todo-app`）と講師用テスト（`theme-b/atf09`）を作り、正しい版で 5/5 緑・欠陥版で 3/5（Negative 2 本が赤）を確認 **→ 済（2.1 参照）** ② 仕様書 1 枚 **→ 済** ③ プロンプト 2 本の文面確定 **→ 済** ④ Zoom 担当を依頼 | 欠陥版を PDI に deploy し、空タイトルで保存できることを自分の目で見る |
-| 水 9/17 午前 | ⑤ 配布 zip `atf01`〜`08`・`10`・`11`（2.4 参照） ⑥ ユーザー `handson01`〜`08` 作成 ⑦ スライド 3 枚 ⑧ Zoom 投票 3 本を作成 ⑨ 視聴者への事前メール送信 ⑩ 一人でフル通し（時間を計り、緑→赤→緑のスクリーンショットを撮る） | 自分一人で 45 分以内に最後まで行ける |
+| 水 9/16（今日） | ① アプリ本体（`theme-b/todo-app`）と講師用テスト（`theme-b/atf09`）を作り、正しい版で 5/5 緑・欠陥版で 3/5（Negative 2 本が赤）を確認 **→ 済（2.1 参照）** ② 仕様書 1 枚 **→ 済** ③ プロンプト 2 本の文面確定 **→ 済** ④ Zoom 担当を依頼 ⑤ 配布 zip 10 個 **→ 済（`theme-b/dist/zips/`）** ⑥ スライド 5 枚 **→ 済（`theme-b/slides/theme-b-slides.pptx`、PowerPoint で開いて確認）** ⑦ 配布文書一式 **→ 済（`theme-b/handout/`）** | 欠陥版を PDI に deploy し、空タイトルで保存できることを自分の目で見る |
+| 木 9/17 午前（パイロット前） | ⑧ ユーザー `handson01`〜`08` 作成（2.5 のスクリプト） ⑨ Zoom 投票 3 本を作成 ⑩ 視聴者への事前メール送信 ⑪ 一人でフル通し（時間を計る。緑→赤→緑のスクリーンショットは `theme-b/evidence/` に既にある） ⑫ Zoom 担当にメモを渡す | 自分一人で 45 分以内に最後まで行ける |
 | 木 9/17 13:00 | パイロット（社員 1〜2 名、うち 1 名は Zoom 側から視聴者役） | 詰まった箇所を本ガイドの「困ったとき」に追記 |
 | 金 9/18 11:00 | 環境凍結。欠陥版を PDI に deploy し直し、Solution ファイル最終確認 | 以降 PDI を触らない |
 | 金 14:20 | 本番 | |
@@ -143,9 +143,11 @@ docs/spec.md に仕様書を置きました。仕様と今のテストを照ら�
 npm run build が通ることを確認してください。deploy はしないでください。
 ```
 
-### 2.4 配布 zip の作り方（`atf01` の例。01〜08 が参加者、10 が講師ライブ用、11 が予備）
+### 2.4 配布 zip（作成済み: `theme-b/dist/zips/atf01.zip`〜`atf08.zip`, `atf10.zip`, `atf11.zip`）
 
-`now-sdk init` は引数を全部渡せば対話なしで動く（2026-09-16 に確認）。PowerShell で 1 つずつ実行する。
+01〜08 が参加者、10 が講師ライブ用、11 が予備。中身は空の Fluent プロジェクト + `CLAUDE.md` + `preflight.ps1`（事前チェック）。zip の中に `node_modules` は無い（参加者が `npm install` する）。
+
+作り直すときの手順（`now-sdk init` は引数を全部渡せば対話なしで動く）:
 
 ```
 cd C:\Users\福田圭樹\Desktop
@@ -160,12 +162,20 @@ copy C:\Users\福田圭樹\Projects\theme-b\atf09\CLAUDE.md .
 
 - `CLAUDE.md` は `theme-b/atf09/CLAUDE.md` が完成品（テスト対象アプリの情報、画面の要素名、Fluent での書き方、Claude Code への頼み方）。そのままコピーする。
 - `src/server/script.ts` はテンプレートのままでよい（example.now.ts を消すと参照されなくなるが、害はない）。
+- `preflight.ps1`（`theme-b/starter/preflight.ps1`）も一緒に入れる。参加者は `.\preflight.ps1` で 9 項目を自己チェックできる。
 - `node_modules` は入れない（参加者が `npm install` する）。フォルダごと zip にする。
 - 09 は講師の完成品（Checkpoint / Solution の配布元）なので **zip にしない**。
 
-### 2.5 参加者ユーザー
+### 2.5 参加者ユーザー（**未作成。木曜午前に講師が実行する**）
 
-`sys_user` に `handson01`〜`08` を作り、パスワード共通、ロール `admin` を付ける。
+`sys_user` に `handson01`〜`08` を作り、パスワード共通、ロール `admin` を付ける。スクリプトを用意してある（Claude Code からは「権限付与」に当たるため実行できなかった。講師が自分のターミナルで実行する）:
+
+```
+cd C:\Users\福田圭樹\Projects\theme-b\tools
+node create-users.mjs <共通パスワード>
+```
+
+`now-sdk auth` の `mypdi` のセッションを使って Table API で作成する。既にユーザーがあればパスワードだけ再設定する。最後に `basic-auth check handson01: 200` と出れば OK。パスワードは英大文字・小文字・数字・記号を含めた 12 文字以上にする（例の形: `Handson-2026!`）。**パスワードはガイドやリポジトリに書かない。当日ホワイトボードに書く。**
 `sn_atf.runner.enabled` と `sn_atf.schedule.enabled` は dev192510 で既に true。念のため金曜午前に確認。
 
 ### 2.6 視聴者への事前メール（水曜に送る。文面そのまま）
@@ -618,15 +628,18 @@ Zoom（設計者役、Zoom 担当が貼る）:
 
 | もの | 用途 |
 |---|---|
-| `atf01.zip`〜`atf08.zip`、`atf10.zip`、`atf11.zip` | 参加者の作業場所（10 は講師ライブ用、11 は予備）。09 は講師の完成品で zip にしない |
+| `theme-b/dist/zips/atf01.zip`〜`atf08.zip`、`atf10.zip`、`atf11.zip` | 参加者の作業場所（10 は講師ライブ用、11 は予備）。09 は講師の完成品で zip にしない。作成済み |
 | `spec.md` | 視聴者には水曜のメールで、参加者には 30 分時点で配る仕様書 |
-| `checkpoint/` = `theme-b\atf09\src\fluent\atf\` の `t1-insert-open.now.ts`, `t2-ui-create.now.ts`, `t2-ui-create.script.js`, `t3-done-sets-completed.now.ts`, `todo-suites.now.ts` | 12 分過ぎても生成が終わらない人用。T3 は「Done にすると completed_at が入る」 |
-| `solution/` = checkpoint + `t4-empty-title-server.now.ts`, `t5-empty-title-ui.now.ts`, `t5-empty-title-ui.script.js` | 35〜43 分で詰まった人用。T4 がサーバー側、T5 が画面側の Negative |
-| スライド 4 枚 | 1 ゴールと役割 / 2 ATF のテストとは / 3 Positive・Negative / 4 赤の 4 分類 |
+| `theme-b/handout/checkpoint/`（T1〜T3 の 4 ファイル + T1〜T3 だけのスイート） | 12 分過ぎても生成が終わらない人用。フォルダの中身を `atfNN\src\fluent\atf\` にコピーする。T3 は「Done にすると completed_at が入る」 |
+| `theme-b/handout/solution/`（T1〜T5 の 8 ファイル。atf09 と同じ） | 35〜43 分で詰まった人用。T4 がサーバー側、T5 が画面側の Negative |
+| スライド 5 枚 `theme-b/slides/theme-b-slides.pptx` | 1 ゴールと役割 / 2 ATF のテストとは / 3 Positive・Negative / 4 赤の 4 分類 / 5 持ち帰る 3 つ。スピーカーノートに台本のセリフ入り |
 | Zoom 投票 3 本 | 2.7 節 |
-| 視聴者への事前メール | 2.6 節。水曜に送る |
-| Zoom 担当への依頼メモ | 2.8 節。水曜に渡す |
-| 水曜通しのスクリーンショット | 緑→赤→緑の 3 枚。deploy 失敗時の代替 |
-| アンケート URL | 会場と Zoom 共通 |
+| 視聴者への事前メール | `theme-b/handout/viewer-email.md`。木曜午前に送る |
+| Zoom 担当への依頼メモ | `theme-b/handout/zoom-staff-memo.md`。木曜午前に渡す |
+| 証跡スクリーンショット | `theme-b/evidence/`（修正版 5/5 のスイート結果、欠陥版 3/5 のスイート結果、テスト一覧、ボード、作成画面）。deploy 失敗時の代替にも使う |
+| アンケート URL | 質問は `theme-b/handout/survey.md`。Google Form などに転記して URL を作る（未作成） |
+| 参加者向け手順書 | `theme-b/handout/participant-guide.md`。印刷または zip と一緒に配る |
+| FAQ / トラブル対応 / 改善 Backlog | `theme-b/handout/faq.md`, `troubleshooting.md`, `backlog.md` |
+| 仕様書 | `theme-b/handout/spec.md`（30 分時点で配る。視聴者には事前メールに添付） |
 
-Checkpoint と Solution は `theme-b/atf09` の完成品をそのまま使う（`todo-suites.now.ts` は T1〜T5 全部を import しているので、checkpoint として配るときは T4・T5 の import と配列の行を消した版を用意する）。参加者のプロジェクトに貼るときは `$id` の衝突は起きないので、ファイルをそのままコピーしてよい。木曜パイロットで動作確認する。パイロットでは 1 名を Zoom 側に置き、視聴者役の流れ（事前メール → 予想 → 30 分の指摘 → 投票）も通す。
+Checkpoint と Solution は `theme-b/atf09` の完成品のコピー（checkpoint 側のスイートは T1〜T3 だけを import する版に差し替え済み）。参加者のプロジェクトに貼るときは `$id` の衝突は起きないので、ファイルをそのままコピーしてよい。木曜パイロットで動作確認する。パイロットでは 1 名を Zoom 側に置き、視聴者役の流れ（事前メール → 予想 → 30 分の指摘 → 投票）も通す。

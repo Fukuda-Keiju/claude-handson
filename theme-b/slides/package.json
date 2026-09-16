@@ -1,0 +1,16 @@
+{
+  "name": "slides",
+  "version": "1.0.0",
+  "description": "テーマB ハンズオン用スライド（pptxgenjs で生成）",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build-slides.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
