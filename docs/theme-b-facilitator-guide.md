@@ -60,30 +60,60 @@
 
 | 日 | やること | 完了の印 |
 |---|---|---|
-| 火 9/16 | ① 欠陥ブランチ `theme-b-buggy` と修正ブランチ `theme-b-fix` を作る（Claude Code に頼む） ② 仕様書 1 枚 ③ プロンプト 2 本の文面確定 ④ Zoom 担当を依頼 | 欠陥版を PDI に deploy し、空タイトルで保存できることを自分の目で見る |
-| 水 9/17 午前 | ⑤ 配布 zip `atf01`〜`10` ⑥ ユーザー `handson01`〜`08` 作成 ⑦ スライド 3 枚 ⑧ Zoom 投票 3 本を作成 ⑨ 視聴者への事前メール送信 ⑩ 一人でフル通し（時間を計り、緑→赤→緑のスクリーンショットを撮る） | 自分一人で 45 分以内に最後まで行ける |
+| 火 9/16 | ① アプリ本体（`theme-b/todo-app`）と講師用テスト（`theme-b/atf09`）を作り、正しい版で 5/5 緑・欠陥版で 3/5（Negative 2 本が赤）を確認 **→ 済（2.1 参照）** ② 仕様書 1 枚 **→ 済** ③ プロンプト 2 本の文面確定 **→ 済** ④ Zoom 担当を依頼 | 欠陥版を PDI に deploy し、空タイトルで保存できることを自分の目で見る |
+| 水 9/17 午前 | ⑤ 配布 zip `atf01`〜`08`・`10`・`11`（2.4 参照） ⑥ ユーザー `handson01`〜`08` 作成 ⑦ スライド 3 枚 ⑧ Zoom 投票 3 本を作成 ⑨ 視聴者への事前メール送信 ⑩ 一人でフル通し（時間を計り、緑→赤→緑のスクリーンショットを撮る） | 自分一人で 45 分以内に最後まで行ける |
 | 木 9/17 13:00 | パイロット（社員 1〜2 名、うち 1 名は Zoom 側から視聴者役） | 詰まった箇所を本ガイドの「困ったとき」に追記 |
 | 金 9/18 11:00 | 環境凍結。欠陥版を PDI に deploy し直し、Solution ファイル最終確認 | 以降 PDI を触らない |
 | 金 14:20 | 本番 | |
 
-### 2.1 欠陥ブランチの作り方（Claude Code への依頼文そのまま）
+### 2.1 アプリと欠陥版・修正版の場所（2026-09-16 に作成済み）
 
+アプリ本体は既存の Task board とは別に、**0 から作った「Handson Todo」**（scope `x_2221398_todo`）です。
+
+| もの | 場所 |
+|---|---|
+| アプリ本体（Fluent プロジェクト） | `C:\Users\福田圭樹\Projects\theme-b\todo-app` |
+| 講師用テスト（Checkpoint 3 本 + Solution 2 本、スイート 2 つ） | `C:\Users\福田圭樹\Projects\theme-b\atf09` |
+| 修正版（正しいアプリ） | git ブランチ `theme-b-fix`（`main` と同じ内容） |
+| 欠陥版 | git ブランチ `theme-b-buggy` |
+
+欠陥版と修正版の差は 3 か所だけです。Business Rule「Validate Todo title」の中止処理、React フォームの入力チェック、テーブルの `mandatory`。
+
+**欠陥版を PDI に入れる（木曜のパイロット前と金曜 11 時に実行）**
 ```
-main から theme-b-buggy ブランチを作ってください。
-Handson Task の「タイトル必須」チェックを外し、空タイトルでも新規作成と保存が成功するようにしてください。
-テーブル定義の mandatory と React の入力チェックの両方を対象にしてください。
-Now.ID のキーは変更しないこと。build が通ることを確認してください。
-次に theme-b-buggy から theme-b-fix ブランチを作り、タイトル必須を元に戻してください。
+cd C:\Users\福田圭樹\Projects
+git checkout theme-b-buggy
+cd theme-b\todo-app
+npm run build
+npm run deploy
 ```
 
-deploy して確認: ボードの New → タイトル空のまま Save → 保存されてしまえば欠陥版 OK。
+**修正版を PDI に入れる（当日 43 分の場面。同じ手順でブランチ名だけ違う）**
+```
+cd C:\Users\福田圭樹\Projects
+git checkout theme-b-fix
+cd theme-b\todo-app
+npm run build
+npm run deploy
+```
+
+確認: ボードの New → タイトル空のまま Save → 保存されてしまえば欠陥版、`タイトルは必須です` と赤く出れば修正版。
+
+**確認済みの結果（2026-09-16、ヘッドレス Runner + `now-sdk cicd testsuite run`）**
+
+| アプリ | T1 | T2 | T3 | T4 (Negative) | T5 (Negative) |
+|---|---|---|---|---|---|
+| 修正版 | 緑 | 緑 | 緑 | 緑 | 緑 |
+| 欠陥版 | 緑 | 緑 | 緑 | **赤**「Inserted record ... when insert was expected to fail」 | **赤**「Unable to find element with role "alert"」 |
+
+欠陥版で T4・T5 が作ったレコードは ATF のロールバックで消えることを確認済み（テスト後に `titleISEMPTY` で検索して 0 件）。
 
 ### 2.2 仕様書（A4 1 枚に載せる文）
 
 視聴者には水曜のメールで渡す。参加者には 30 分時点で渡す。
 
 ```
-Handson Task 仕様（抜粋）
+Handson Todo 仕様（抜粋）
 1. タスクにはタイトルが必須である。空欄では新規作成も保存もできず、エラーが表示される。
 2. タイトルは 100 文字以内である。
 3. 状態は Open / In Progress / Done の 3 つである。
@@ -96,8 +126,8 @@ Handson Task 仕様（抜粋）
 **プロンプト①（10 分時点で配る）**
 ```
 このプロジェクトは ServiceNow Fluent SDK の ATF テスト専用プロジェクトです。
-テスト対象は同じインスタンス上の別スコープのアプリ「Handson Task」
-（テーブル x_2221398_handson_task、UI ページはナビゲータの Handson Task board）です。
+テスト対象は同じインスタンス上の別スコープのアプリ「Handson Todo」
+（テーブル x_2221398_todo_item、UI ページはナビゲータの Handson Todo board）です。
 CLAUDE.md のルールに従って、次の 3 本の ATF テストと、それをまとめた TestSuite を src/fluent/atf/ に作ってください。
 1. Positive（サーバー）: タイトル付きでレコードを作成でき、state の初期値が open であること
 2. Positive（UI）: ボード画面で New を押し、タイトルを入力して Save すると一覧に表示されること
@@ -113,15 +143,25 @@ docs/spec.md に仕様書を置きました。仕様と今のテストを照ら�
 npm run build が通ることを確認してください。deploy はしないでください。
 ```
 
-### 2.4 配布 zip の中身（`atf01` の例、講師が 10 回作る）
+### 2.4 配布 zip の作り方（`atf01` の例。01〜08 が参加者、10 が講師ライブ用、11 が予備）
+
+`now-sdk init` は引数を全部渡せば対話なしで動く（2026-09-16 に確認）。PowerShell で 1 つずつ実行する。
 
 ```
-now-sdk init   # 対話で scope を x_2221398_atf01、名前を "ATF Handson 01" にする
+cd C:\Users\福田圭樹\Desktop
+mkdir atf01
+cd atf01
+now-sdk.cmd init --appName "ATF Handson 01" --packageName atf-handson-01 --scopeName x_2221398_atf01 --template typescript.basic --auth mypdi
+del src\fluent\example.now.ts
+mkdir docs
+mkdir src\fluent\atf
+copy C:\Users\福田圭樹\Projects\theme-b\atf09\CLAUDE.md .
 ```
-できたフォルダに以下を追加してから zip にする。
-- `CLAUDE.md`: `docs/atf-knowledge.md` の 3 章（書き方）、4 章（ステップ）、5 章（UI テストのルールとセレクタ一覧）をそのままコピー。先頭に「テスト対象アプリの情報」として上のテーブル名・モジュール名を追記。
-- `docs/` フォルダ（空）: 当日ここに `spec.md` を置いてもらう。
-- `src/fluent/atf/` フォルダ（空）。
+
+- `CLAUDE.md` は `theme-b/atf09/CLAUDE.md` が完成品（テスト対象アプリの情報、画面の要素名、Fluent での書き方、Claude Code への頼み方）。そのままコピーする。
+- `src/server/script.ts` はテンプレートのままでよい（example.now.ts を消すと参照されなくなるが、害はない）。
+- `node_modules` は入れない（参加者が `npm install` する）。フォルダごと zip にする。
+- 09 は講師の完成品（Checkpoint / Solution の配布元）なので **zip にしない**。
 
 ### 2.5 参加者ユーザー
 
@@ -198,8 +238,8 @@ Zoom で視聴される皆さんには「設計者・レビュアー役」をお
 - 🆘 **詰まったら**: よくある症状と対処。5 章の早見表と同じ内容
 
 **当日の講師の画面**は次の 3 つを開いておき、ブラウザとターミナルを Zoom で画面共有する。
-1. ブラウザ: 講師 PDI に `admin` でログイン済み。タブ A = Handson Task board、タブ B = ATF の Tests 一覧
-2. ターミナル 2 つ: 片方は `C:\Users\福田圭樹\Projects` で `git checkout theme-b-buggy` 済み（欠陥版）。もう片方は `atf09` フォルダで `claude` を起動できる状態
+1. ブラウザ: 講師 PDI に `admin` でログイン済み。タブ A = Handson Todo board、タブ B = ATF の Tests 一覧
+2. ターミナル 2 つ: 片方は `C:\Users\福田圭樹\Projects\theme-b\todo-app` で、リポジトリを `git checkout theme-b-buggy` 済み（欠陥版が PDI に入っている状態）。もう片方はデスクトップの `atf10`（講師ライブ用の空プロジェクト）で `claude` を起動できる状態
 3. このガイドとスライド（共有しない画面に置く）
 
 ---
@@ -272,16 +312,16 @@ Zoom で視聴される皆さんには「設計者・レビュアー役」をお
 ### 5〜10 分　アプリを触る（参加者に仕様書は渡さない）
 
 🗣 **言う**
-「Handson Task board というアプリです。タスクを作って、Open・In Progress・Done の 3 つの列で管理する簡単なものです。テスター役の皆さん、3 分間自由に触ってください。タスクを作る、列を動かす、開く、消す。作るタスクの名前の先頭には自分の番号を入れてください。『01 買い物』のように。」
+「Handson Todo board というアプリです。タスクを作って、Open・In Progress・Done の 3 つの列で管理する簡単なものです。テスター役の皆さん、3 分間自由に触ってください。タスクを作る、列を動かす、開く、消す。作るタスクの名前の先頭には自分の番号を入れてください。『01 買い物』のように。」
 
 🖱 **講師の操作**（Zoom にも映る。**空タイトルの保存は絶対に試さない**）
-1. タブ A で左上の **All** → 検索欄に `Handson` → **Handson Task board**。
+1. タブ A で左上の **All** → 検索欄に `Handson` → **Handson Todo board**。
 2. **New** → タイトルに `99 講師のタスク` → **Save**。一覧に出る。
 3. ボードに戻り、カードの矢印ボタンで In Progress へ動かす。
 
 👥 **参加者**（会場チャットに貼る）
 ```
-【アプリを触る】ブラウザ左上 All → 検索欄に Handson → Handson Task board をクリック。
+【アプリを触る】ブラウザ左上 All → 検索欄に Handson → Handson Todo board をクリック。
 3 分間自由に触ってください。タスク名の先頭に自分の番号（例: 01 買い物）。
 ```
 
@@ -310,7 +350,7 @@ Zoom 担当は予想を集めておき、30 分時点で「当たっていたか
 ```
 続けて 2.3 節のプロンプト①の本文を貼る。
 
-🖱 **講師の操作**: `atf09` のターミナルで `claude` を起動し、同じプロンプト①を貼って実行。**Zoom 共有はこのターミナルに切り替える。** Claude Code が動いている間、次の実況をする。
+🖱 **講師の操作**: `atf10`（講師ライブ用）のターミナルで `claude` を起動し、同じプロンプト①を貼って実行。**Zoom 共有はこのターミナルに切り替える。** Claude Code が動いている間、次の実況をする。
 
 🗣 **実況（読み上げてよい。Claude Code の進み方に合わせて順番は前後してよい）**
 
@@ -342,7 +382,7 @@ UI テストのファイルができたとき:
 
 🆘 **詰まったら**
 - 22 分になっても終わらない → チャットで Checkpoint フォルダの場所を案内し、「中の全ファイルを `atfNN\src\fluent\atf\` にコピーしてください。Claude Code は `Esc` で止めて構いません」と言う。
-- 講師の `atf09` の生成が遅い → 実況はできる範囲で切り上げ、Checkpoint のファイルをエディタで開いて読み上げに切り替える。内容は同じ。
+- 講師の `atf10` の生成が遅い → 実況はできる範囲で切り上げ、Checkpoint のファイル（`theme-b\atf09\src\fluent\atf\t1-insert-open.now.ts` など）をエディタで開いて読み上げに切り替える。
 
 ---
 
@@ -372,7 +412,7 @@ UI テストのファイルができたとき:
 
 🖱 **講師の操作**（Zoom 共有をブラウザに切り替え。参加者と同じ手順を実演。ボタンを押すたびに名前を声に出す）
 1. タブ B（Tests 一覧）を出す。
-2. 自分の `atf09` のテストを開き、**Run Test** → 小さな画面の **Run Test**。
+2. 自分のテスト（Application が `ATF Handson 10`。ライブ生成が失敗していたら `ATF Handson 09` の `Todo: タイトル付きで作成すると state=open になる`）を開き、**Run Test** → 小さな画面の **Run Test**。
 3. 新しいタブが開くのを見せ、「これが Client Test Runner です。UI テストはこのタブの中で動きます。閉じると止まります」と言う。
 4. 元のタブに戻り、結果画面の見方を示す。「上に Status。下に Test Result Items、ステップごとの結果が並んでいます。緑が成功です。」
 5. UI テストを実行するときは Runner タブを Zoom に映す。**画面が勝手に動いてタスクを作る様子**は視聴者にとって一番分かりやすい場面。「人間の代わりにブラウザが動いています」と言う。
@@ -389,7 +429,7 @@ UI テストのファイルができたとき:
 「全員、緑ですね。投票の結果は…（Zoom 担当に聞く）…でした。3 本と答えた人が正解です。ここで質問です。テストが全部通りました。このアプリは正しいと言えますか。テスター役の皆さん、少し考えてください。設計者の皆さん、答えを知っていますね。次のブロックで聞きます。」
 
 🆘 **詰まったら**
-- `npm run deploy` が赤字で止まる → エラーの先頭 3 行を読んでもらう。`auth` や `401` があれば `now-sdk auth --list` を確認し、無ければ 0〜5 分の登録をやり直す。`scope` があれば予備の `atf09` か `atf10` の zip を渡す（`atf09` を講師が使っている場合は `atf10`）。
+- `npm run deploy` が赤字で止まる → エラーの先頭 3 行を読んでもらう。`auth` や `401` があれば `now-sdk auth --list` を確認し、無ければ 0〜5 分の登録をやり直す。`scope` があれば予備の `atf11` の zip を渡す。
 - Run Test を押しても結果が「Waiting for a test runner」のまま → 新しいタブがブロックされている。アドレスバー右端のポップアップブロックのアイコンを押して許可し、もう一度 Run Test。
 - UI テストだけ赤 → 「ボタンの名前が違うといったテスト側の問題の可能性が高いです。今は先に進み、後半で扱います」と言う。サーバー側 2 本が緑なら進む。
 
@@ -442,7 +482,7 @@ UI テストのファイルができたとき:
 今度は Status が Failure（赤）になります。赤になったら手を挙げてください。
 ```
 
-🖱 **講師の操作**: `atf09` で同じことを実行し、Zoom にターミナル → ブラウザの順で映す。赤の結果画面を出す。
+🖱 **講師の操作**: `atf10` で同じことを実行し、Zoom にターミナル → ブラウザの順で映す。赤の結果画面を出す。生成が間に合わなければ `ATF Handson 09` の `Todo: 空タイトルはサーバーで拒否される (Negative)` を Run Test して赤を見せる（結果は事前確認済み）。
 
 🗣 **言う（赤が出たら）**
 「赤が出ました。ここで 4 分類です。」（スライド 4 を出す）「テストが赤になる原因は 4 つのどれかです。1 つ目、アプリの欠陥。これが本来見つけたいもの。2 つ目、テストの間違い。ボタンの名前が違う、期待値が逆。3 つ目、環境。テスト用のタブを閉じた、ログインが切れた。4 つ目、データ。他の人のレコードと混ざった。」
@@ -471,7 +511,7 @@ UI テストのファイルができたとき:
 🗣 **言う**
 「テストが欠陥を見つけました。直すのは開発者の仕事です。今日は私が代表して修正版を入れます。テスター役の皆さんは、テストをもう一度流して、修正が正しいことを確かめてください。これが再テストです。」
 
-🖱 **講師の操作**（`Projects` のターミナルを Zoom に映す。事前に水曜に成功を確認済みのコマンド）
+🖱 **講師の操作**（`theme-b\todo-app` のターミナルを Zoom に映す。2026-09-16 に成功を確認済みのコマンド。ブランチ切替はリポジトリ全体に効くが、このフォルダで build / deploy すればよい）
 
 ```
 git diff theme-b-buggy theme-b-fix --stat
@@ -561,7 +601,7 @@ Zoom（設計者役、Zoom 担当が貼る）:
 |---|---|---|
 | `now-sdk` が実行できない | PowerShell の赤いエラーに「スクリプトの実行が無効」 | `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` |
 | `npm run deploy` で auth エラー | `now-sdk auth --list` に `handson` があるか | 無ければ参加者自身のターミナルで `now-sdk auth --add --alias handson` |
-| deploy でスコープのエラー | `now.config.json` の scope が `x_2221398_atfNN` か | 予備の zip（`atf10`）を渡す |
+| deploy でスコープのエラー | `now.config.json` の scope が `x_2221398_atfNN` か | 予備の zip（`atf11`）を渡す |
 | Run Test で Runner が開かない | ブラウザのポップアップブロック | 許可して再度 Run Test。または All → ATF → Client Test Runner を手で開く |
 | UI テストが「要素が見つからない」で Fail | セレクタ違い（4 分類の②） | CLAUDE.md のセレクタ一覧を Claude Code に見せて直させる。時間がなければ Solution |
 | Negative が緑になる（欠陥版なのに） | テストが「保存できる」を期待している | Solution の Negative を渡す。これ自体が「プロダクト起点の罠」の実例なので言及する |
@@ -578,10 +618,10 @@ Zoom（設計者役、Zoom 担当が貼る）:
 
 | もの | 用途 |
 |---|---|
-| `atf01.zip`〜`atf10.zip` | 参加者の作業場所（`atf09` は講師のデモ用、`atf10` は予備） |
+| `atf01.zip`〜`atf08.zip`、`atf10.zip`、`atf11.zip` | 参加者の作業場所（10 は講師ライブ用、11 は予備）。09 は講師の完成品で zip にしない |
 | `spec.md` | 視聴者には水曜のメールで、参加者には 30 分時点で配る仕様書 |
-| `checkpoint/`（3 本の `.now.ts` + `.script.js` + suite） | 12 分過ぎても生成が終わらない人用 |
-| `solution/`（checkpoint + Negative 1 本） | 35〜43 分で詰まった人用 |
+| `checkpoint/` = `theme-b\atf09\src\fluent\atf\` の `t1-insert-open.now.ts`, `t2-ui-create.now.ts`, `t2-ui-create.script.js`, `t3-done-sets-completed.now.ts`, `todo-suites.now.ts` | 12 分過ぎても生成が終わらない人用。T3 は「Done にすると completed_at が入る」 |
+| `solution/` = checkpoint + `t4-empty-title-server.now.ts`, `t5-empty-title-ui.now.ts`, `t5-empty-title-ui.script.js` | 35〜43 分で詰まった人用。T4 がサーバー側、T5 が画面側の Negative |
 | スライド 4 枚 | 1 ゴールと役割 / 2 ATF のテストとは / 3 Positive・Negative / 4 赤の 4 分類 |
 | Zoom 投票 3 本 | 2.7 節 |
 | 視聴者への事前メール | 2.6 節。水曜に送る |
@@ -589,4 +629,4 @@ Zoom（設計者役、Zoom 担当が貼る）:
 | 水曜通しのスクリーンショット | 緑→赤→緑の 3 枚。deploy 失敗時の代替 |
 | アンケート URL | 会場と Zoom 共通 |
 
-Checkpoint と Solution は、講師自身が `atf09` でプロンプト①②を実行して得た成果物をそのまま使う。木曜パイロットで動作確認する。パイロットでは 1 名を Zoom 側に置き、視聴者役の流れ（事前メール → 予想 → 30 分の指摘 → 投票）も通す。
+Checkpoint と Solution は `theme-b/atf09` の完成品をそのまま使う（`todo-suites.now.ts` は T1〜T5 全部を import しているので、checkpoint として配るときは T4・T5 の import と配列の行を消した版を用意する）。参加者のプロジェクトに貼るときは `$id` の衝突は起きないので、ファイルをそのままコピーしてよい。木曜パイロットで動作確認する。パイロットでは 1 名を Zoom 側に置き、視聴者役の流れ（事前メール → 予想 → 30 分の指摘 → 投票）も通す。
