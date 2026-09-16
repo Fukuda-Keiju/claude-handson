@@ -1,0 +1,44 @@
+/* デザイントークン（色・余白・文字サイズの名前付き定数）をまとめたファイル。
+   ここで定義した --td-* だけを app.css から参照するようにしておくと、
+   色を変えたいときにこのファイルだけ直せばよくなる。
+
+   重要: ServiceNow(Horizon) の CSS 変数 --now-color_* は「色」ではなく
+   "243,248,249" のような RGB の 3 つの数字が入っている。
+   そのため var(--now-color_...) をそのまま色として使うと無効な値になり、背景が消える。
+   必ず rgb(var(--now-color_..., r, g, b)) の形で包むこと（カンマ区切りの数字は未定義時の代替値）。 */
+:root {
+    /* 余白 */
+    --td-space-xs: 4px;
+    --td-space-sm: 8px;
+    --td-space-md: 16px;
+    --td-space-lg: 24px;
+
+    /* 角丸と影 */
+    --td-radius: 8px;
+    --td-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+
+    /* 面の色 */
+    --td-bg-page: rgb(var(--now-color_background--secondary, 243, 245, 248));
+    --td-bg-surface: rgb(var(--now-color_background--primary, 255, 255, 255));
+    --td-bg-subtle: rgb(var(--now-color_background--tertiary, 234, 238, 243));
+    --td-border: rgb(var(--now-color_border--secondary, 223, 227, 232));
+
+    /* 文字の色 */
+    --td-text: rgb(var(--now-color_text--primary, 27, 36, 48));
+    --td-text-secondary: rgb(var(--now-color_text--secondary, 91, 102, 114));
+    --td-text-on-accent: #ffffff;
+
+    /* アクセント（ブランドカラー）と警告色 */
+    --td-accent: rgb(var(--now-color_brand--primary, 15, 95, 209));
+    --td-danger: rgb(var(--now-color_alert--critical, 217, 45, 32));
+    --td-danger-soft: #fdecea;
+    --td-success: #16a34a;
+    --td-success-soft: #e5f6ea;
+
+    /* 文字 */
+    --td-font: var(--now-font-family, Lato, Arial, sans-serif);
+    --td-font-size-sm: 12px;
+    --td-font-size-md: 14px;
+    --td-font-size-lg: 16px;
+    --td-font-size-xl: 22px;
+}

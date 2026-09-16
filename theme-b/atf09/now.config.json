@@ -1,0 +1,6 @@
+{
+    "scope": "x_2221398_atf09",
+    "scopeId": "eac72882e17f4014864d7c36fb19db2e",
+    "name": "ATF Handson 09",
+    "tsconfigPath": "./src/server/tsconfig.json"
+}

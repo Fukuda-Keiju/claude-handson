@@ -1,0 +1,358 @@
+/* 画面全体のスタイル。色や余白は tokens.css の --td-* だけを使う。
+   ハンズオンの主役はテストなので、装飾は「読みやすい」ところで止めている。
+   幅 1400px でも 800px でも崩れないよう、横並びは grid の auto-fit で折り返す。 */
+
+.app {
+    /* 1400px の画面でも間延びしないよう、本文の最大幅を決める */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--td-space-lg);
+    box-sizing: border-box;
+    font-family: var(--td-font);
+    font-size: var(--td-font-size-md);
+    color: var(--td-text);
+    background-color: var(--td-bg-page);
+    min-height: 100vh;
+}
+
+/* ───────── ヘッダー ───────── */
+.app__header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--td-space-sm);
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--td-space-md);
+    border-bottom: 1px solid var(--td-border);
+}
+
+.app__title {
+    margin: 0;
+    font-size: var(--td-font-size-xl);
+}
+
+.app__new {
+    padding: var(--td-space-sm) var(--td-space-lg);
+    border: none;
+    border-radius: var(--td-radius);
+    background-color: var(--td-accent);
+    color: var(--td-text-on-accent);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.app__new:hover {
+    opacity: 0.9;
+}
+
+/* ───────── タブ ───────── */
+.app__tabs {
+    display: flex;
+    gap: var(--td-space-xs);
+    margin: var(--td-space-md) 0;
+}
+
+.app__tab {
+    padding: var(--td-space-sm) var(--td-space-md);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-surface);
+    color: var(--td-text-secondary);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    cursor: pointer;
+}
+
+/* 選択中のタブには aria-selected="true" が付くので、その属性で見た目を変えられる */
+.app__tab[aria-selected="true"] {
+    border-color: var(--td-accent);
+    background-color: var(--td-accent);
+    color: var(--td-text-on-accent);
+    font-weight: bold;
+}
+
+/* ───────── お知らせ（status / alert） ───────── */
+.app__status,
+.app__error,
+.todo-form__alert {
+    margin: var(--td-space-md) 0;
+    padding: var(--td-space-sm) var(--td-space-md);
+    border-radius: var(--td-radius);
+    font-size: var(--td-font-size-md);
+}
+
+.app__status {
+    background-color: var(--td-success-soft);
+    border-left: 4px solid var(--td-success);
+}
+
+.app__error,
+.todo-form__alert {
+    background-color: var(--td-danger-soft);
+    border-left: 4px solid var(--td-danger);
+    color: var(--td-danger);
+}
+
+.app__hint {
+    padding: var(--td-space-lg);
+    color: var(--td-text-secondary);
+}
+
+.app__main {
+    margin-top: var(--td-space-md);
+}
+
+/* ───────── ボード ───────── */
+.board {
+    display: grid;
+    /* 列が入りきらない幅では自動で折り返すので、800px でも横スクロールにならない */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--td-space-md);
+}
+
+.board__column {
+    padding: var(--td-space-md);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-subtle);
+}
+
+.board__heading {
+    margin: 0;
+    font-size: var(--td-font-size-lg);
+}
+
+.board__count {
+    margin: var(--td-space-xs) 0 var(--td-space-md);
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+}
+
+.board__cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--td-space-sm);
+}
+
+.board__card {
+    padding: var(--td-space-sm);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-surface);
+    box-shadow: var(--td-shadow);
+}
+
+.board__card-open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--td-text);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    text-align: left;
+    cursor: pointer;
+}
+
+.board__card-title {
+    display: block;
+    font-weight: bold;
+    /* 長いタイトルでもカードからはみ出さないよう折り返す */
+    overflow-wrap: anywhere;
+}
+
+.board__card-due {
+    display: block;
+    margin-top: var(--td-space-xs);
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+}
+
+.board__card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--td-space-xs);
+    margin-top: var(--td-space-sm);
+}
+
+.board__move {
+    padding: var(--td-space-xs) var(--td-space-sm);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-subtle);
+    color: var(--td-text-secondary);
+    font-family: inherit;
+    font-size: var(--td-font-size-sm);
+    cursor: pointer;
+}
+
+.board__move:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.board__empty {
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+}
+
+/* ───────── 一覧 ───────── */
+.list {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--td-bg-surface);
+    border: 1px solid var(--td-border);
+}
+
+.list__caption {
+    padding-bottom: var(--td-space-sm);
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+    text-align: left;
+}
+
+.list th,
+.list td {
+    padding: var(--td-space-sm) var(--td-space-md);
+    border-bottom: 1px solid var(--td-border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.list th {
+    background-color: var(--td-bg-subtle);
+    font-size: var(--td-font-size-sm);
+    color: var(--td-text-secondary);
+}
+
+.list__open {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--td-accent);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.list__empty {
+    padding: var(--td-space-lg);
+    color: var(--td-text-secondary);
+}
+
+/* ───────── フォーム（新規作成・詳細） ───────── */
+.todo-form {
+    max-width: 560px;
+    padding: var(--td-space-lg);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-surface);
+    box-shadow: var(--td-shadow);
+}
+
+.todo-form__heading {
+    margin: 0 0 var(--td-space-md);
+    font-size: var(--td-font-size-lg);
+}
+
+.todo-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--td-space-xs);
+    margin-bottom: var(--td-space-md);
+}
+
+.todo-form__field label {
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+    font-weight: bold;
+}
+
+.todo-form__field input,
+.todo-form__field select,
+.todo-form__field textarea {
+    padding: var(--td-space-sm);
+    border: 1px solid var(--td-border);
+    border-radius: var(--td-radius);
+    background-color: var(--td-bg-surface);
+    color: var(--td-text);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.todo-form__readonly {
+    display: flex;
+    gap: var(--td-space-sm);
+    margin: 0 0 var(--td-space-md);
+    color: var(--td-text-secondary);
+    font-size: var(--td-font-size-sm);
+}
+
+.todo-form__readonly-label {
+    font-weight: bold;
+}
+
+.todo-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--td-space-sm);
+}
+
+.todo-form__save,
+.todo-form__secondary,
+.todo-form__delete {
+    padding: var(--td-space-sm) var(--td-space-lg);
+    border-radius: var(--td-radius);
+    font-family: inherit;
+    font-size: var(--td-font-size-md);
+    cursor: pointer;
+}
+
+.todo-form__save {
+    border: none;
+    background-color: var(--td-accent);
+    color: var(--td-text-on-accent);
+    font-weight: bold;
+}
+
+.todo-form__secondary {
+    border: 1px solid var(--td-border);
+    background-color: var(--td-bg-surface);
+    color: var(--td-text);
+}
+
+.todo-form__delete {
+    border: 1px solid var(--td-danger);
+    background-color: var(--td-bg-surface);
+    color: var(--td-danger);
+}
+
+.todo-form__save:disabled,
+.todo-form__secondary:disabled,
+.todo-form__delete:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* 画面が狭いときはボタンを縦に積んで押しやすくする */
+@media (max-width: 600px) {
+    .app {
+        padding: var(--td-space-md);
+    }
+
+    .todo-form__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

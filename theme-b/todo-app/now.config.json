@@ -1,0 +1,7 @@
+{
+    "scope": "x_2221398_todo",
+    "scopeId": "aa3dacb1566745e7bde1abefb27ee261",
+    "name": "Handson Todo",
+    "tsconfigPath": "./src/server/tsconfig.json",
+    "packageSourceCodeOnInstance": true
+}
