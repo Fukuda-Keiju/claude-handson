@@ -93,7 +93,7 @@ PC はすでに準備済みです。ブラウザに Handson Todo board が開い
 
 🆘
 - 「スクリプトの実行が無効」→ `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` → `Y` → もう一度 `.\preflight.ps1`。
-- 「接続先 [mypdi] が登録されていない」→ `now-sdk auth --add --alias mypdi`（URL は自分の PDI、`admin`）。2 分で直らなければ共用 PC へ。
+- 「接続先 [mypdi] が登録されていない」→ `now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi`（URL は自分の PDI、`admin`）。2 分で直らなければ共用 PC へ。
 - PDI が起きない → 共用 PC の空き席へ。空きがなければ講師の画面を見てもらい、19 分の Checkpoint で合流。
 - 共用 PC のブラウザがログアウトしている → 札の裏の URL とパスワードで `admin` ログイン。
 
@@ -500,7 +500,7 @@ fix.ps1 は同じ 3 ファイルの完成版を上書きします。中身は AI
 | 共用 PC で前の組の成果物が残っている（テストが 3 本以上ある） | Tests 一覧 | 前日の準備漏れ。そのまま進め、Application の絞り込みで自分の分を見分ける |
 | 事前課題をしていない人が自分の PC で来た | | 共用 PC の空き席へ。空きがなければ相席（読み役）。**当日に setup.ps1 を走らせない**（5 分かかる） |
 | オンライン参加者が遅れている | Zoom チャット | 待たない。Zoom 担当が Checkpoint / Solution / fix.ps1 の文を個別に貼る |
-| preflight で「接続先 [mypdi] が登録されていない」 | `now-sdk auth --list` | `now-sdk auth --add --alias mypdi`。2 分で直らなければ共用 PC へ |
+| preflight で「接続先 [mypdi] が登録されていない」 | `now-sdk auth --list` | `now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi`。2 分で直らなければ共用 PC へ |
 | `npm run deploy` で `scopeId` がない | `now.config.json` | `.\setup.ps1 -SkipNpm -SkipInstall`（atf-tests）/ `.\setup.ps1 -SkipNpm`（todo-app） |
 | deploy で「Unable to install application as application was null」 | 接頭辞 | `.\setup.ps1` をやり直す |
 | Run Test で Runner が開かない | ポップアップブロック | 許可して再度。または All → Automated Test Framework → Client Test Runner |

@@ -335,7 +335,7 @@ Zoom で視聴される皆さんには「設計者・レビュアー役」をお
 
 ```
 【接続の登録・打つ】自分のターミナル（atfNN フォルダで開いたもの）で次を打ちます。
-  now-sdk auth --add --alias handson
+  now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson
 質問が順に出ます。次のように答えてください。
   Instance URL      → https://dev192510.service-now.com
   Auth type         → basic を選ぶ（矢印キーで選んで Enter）
@@ -361,7 +361,7 @@ Zoom で視聴される皆さんには「設計者・レビュアー役」をお
 ✅ **確認**: 「`now-sdk auth --list` に handson が出た人（組）、ブラウザでログインできた人（組）、claude の入力欄が出た人（組）、挙手してください。」3 つとも挙がるまで待つ。上限 5 分。**会場が 9 名以上のときは、全員を待たず 8 割で進む。** 残りは巡回して個別に直し、間に合わなければ 22 分の Checkpoint に合流させる。
 
 🆘 **詰まったら**
-- `now-sdk` が「このシステムではスクリプトの実行が無効」と赤字で出る → PowerShell で `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち、`Y` で答えて、もう一度 `now-sdk auth --add --alias handson`。
+- `now-sdk` が「このシステムではスクリプトの実行が無効」と赤字で出る → PowerShell で `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち、`Y` で答えて、もう一度 `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson`。
 - パスワードが違うと言われる → ホワイトボードの文字を確認。大文字小文字。
 - `claude` が「ログインしてください」と言う → `claude` の指示通りブラウザでログイン。1 分以上かかる場合は隣の人と画面を共有してもらい先に進む。
 
@@ -694,7 +694,7 @@ Zoom（設計者役、Zoom 担当が貼る）:
 | 症状 | まず見る | 対処 |
 |---|---|---|
 | `now-sdk` が実行できない | PowerShell の赤いエラーに「スクリプトの実行が無効」 | `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` |
-| `npm run deploy` で auth エラー | `now-sdk auth --list` に `handson` があるか | 無ければ参加者自身のターミナルで `now-sdk auth --add --alias handson` |
+| `npm run deploy` で auth エラー | `now-sdk auth --list` に `handson` があるか | 無ければ参加者自身のターミナルで `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson` |
 | deploy でスコープのエラー | `now.config.json` の scope が `x_2221398_atfNN` か | 予備の zip（`atf11`）を渡す |
 | Run Test で Runner が開かない | ブラウザのポップアップブロック | 許可して再度 Run Test。または All → ATF → Client Test Runner を手で開く |
 | UI テストが「要素が見つからない」で Fail | セレクタ違い（4 分類の②） | CLAUDE.md のセレクタ一覧を Claude Code に見せて直させる。時間がなければ Solution |

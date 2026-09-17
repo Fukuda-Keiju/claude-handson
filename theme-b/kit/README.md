@@ -22,10 +22,11 @@
 1. **PDI を用意する。** お持ちでない方は https://developer.servicenow.com で取得（10 分）。
 2. **道具を入れる。** Node.js LTS、`npm install -g @servicenow/sdk`、`npm install -g @anthropic-ai/claude-code`。
 3. このフォルダを右クリック →「ターミナルで開く」。
-4. 接続先を登録する。質問に自分の PDI の URL、`basic`、`admin`、パスワードで答える。
+4. 接続先を登録する。`devXXXXXX` を自分の PDI に置き換えて打つ（URL を省くと `Missing required argument for --add` で止まる）。聞かれたらユーザー名 `admin`、パスワードの順に答える。
    ```
-   now-sdk auth --add --alias mypdi
+   now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi
    ```
+   確認は `now-sdk auth --list`。`[mypdi]` の行に自分の URL が出れば OK。
 5. セットアップを実行する（5 分ほど。最後に「準備完了です」と出れば成功）。
    ```
    .\setup.ps1

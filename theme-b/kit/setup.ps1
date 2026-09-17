@@ -87,7 +87,7 @@ foreach ($d in @('todo-app', 'atf-tests', 'fix')) {
 
 $authList = (Invoke-NowSdk @('auth', '--list')) -join "`n"
 if ($authList -notmatch ('\[' + [regex]::Escape($Auth) + '\]')) {
-    Fail "now-sdk に接続先 [$Auth] が登録されていません" "now-sdk auth --add --alias $Auth を実行し、自分の PDI の URL / admin / パスワードを入れてください"
+    Fail "now-sdk に接続先 [$Auth] が登録されていません" "now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias $Auth を実行し、自分の PDI の URL / admin / パスワードを入れてください"
 }
 Ok "接続先 [$Auth] を使います"
 

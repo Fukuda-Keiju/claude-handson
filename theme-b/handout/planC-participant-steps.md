@@ -37,14 +37,12 @@
    ```
 4. **キットを展開する。** `themeB-kit.zip` をデスクトップに置き、右クリック → 「すべて展開」。`Desktop\themeB-kit` の中に `setup.ps1` があることを確認する。二重フォルダ（`themeB-kit\themeB-kit`）になっていたら内側を使う。
 5. **キットのフォルダをターミナルで開く。** `themeB-kit` を開き、何もない所で右クリック → 「ターミナルで開く」。プロンプトのパスが `themeB-kit` で終わっていることを確認する。
-6. **接続先を登録する。** 次を打ち、質問に順番に答える。
+6. **接続先を登録する。** `devXXXXXX` を自分の PDI に置き換えて打ち、質問に順番に答える（URL を省くと `Missing required argument for --add` で止まる）。
    ```
-   now-sdk auth --add --alias mypdi
+   now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi
    ```
-   - Instance URL: 自分の PDI の URL（`https://devXXXXXX.service-now.com`）
-   - 認証方式: `basic`
    - ユーザー名: `admin`
-   - パスワード: PDI の admin パスワード
+   - パスワード: PDI の admin パスワード（打っても表示されない）
 
    確認は `now-sdk auth --list`。`[mypdi]` が出れば OK。
 7. **セットアップを実行する。** 5 分ほど（2026-09-16 実測 292 秒）。最後に緑で「準備完了です。」と出れば成功。

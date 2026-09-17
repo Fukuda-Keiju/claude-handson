@@ -68,7 +68,7 @@
 🆘
 - 「ターミナルで開く」が出ない → スタートメニューから「ターミナル」を開き、`cd Desktop\themeB-kit` と打って Enter。
 - 「スクリプトの実行が無効」と赤字 → `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち、`Y`。もう一度 `.\preflight.ps1`。
-- 「接続先 [mypdi] が登録されていない」→ 事前課題の `now-sdk auth --add --alias mypdi` をその場でやり直す。URL は自分の PDI、ユーザー `admin`。
+- 「接続先 [mypdi] が登録されていない」→ 事前課題の `now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi` をその場でやり直す。URL は自分の PDI、ユーザー `admin`。
 - 「自分の PDI にアプリが入っている」だけ NG → PDI が休止中。ブラウザでログインしてから 1 分待ち、もう一度 `.\preflight.ps1`。
 - PDI のログイン画面が数分出ない → 待つしかない。「起きるまで視聴者として見ていてください。22 分で合流できます」と伝える。
 
@@ -519,7 +519,7 @@ deploy の最後に成功のメッセージが出たら「入りました。再�
 
 | 症状 | まず見る | 対処 |
 |---|---|---|
-| preflight で「接続先 [mypdi] が登録されていない」 | `now-sdk auth --list` | `now-sdk auth --add --alias mypdi`。URL は自分の PDI、`basic`、`admin` |
+| preflight で「接続先 [mypdi] が登録されていない」 | `now-sdk auth --list` | `now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi`。URL は自分の PDI、`basic`、`admin` |
 | preflight で「自分の PDI にアプリが入っている」だけ NG | PDI が休止中 | ブラウザでログインして 1 分待ち、もう一度 preflight。それでも NG なら `.\setup.ps1 -SkipNpm` |
 | PDI が起きない（ログイン画面が数分出ない） | | 待つ。22 分までに起きなければ視聴者役へ |
 | `npm run deploy` で `scopeId` がない | `now.config.json` の scopeId | `.\setup.ps1 -SkipNpm -SkipInstall`（atf-tests 側）/ `.\setup.ps1 -SkipNpm`（todo-app 側） |

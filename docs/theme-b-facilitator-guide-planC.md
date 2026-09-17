@@ -303,7 +303,7 @@ CLAUDE.md のルールに従って、次の 3 本の ATF テストと、それ�
 2. 添付の themeB-kit.zip をデスクトップに展開する
 3. 展開したフォルダを右クリック →「ターミナルで開く」→ 次を順に打つ
      .\preflight.ps1                     ← 足りないものが赤で出ます。指示に従って入れてください
-     now-sdk auth --add --alias mypdi    ← ご自身の PDI の URL / admin / パスワード
+     now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi    ← devXXXXXX をご自身の PDI に。聞かれたら admin / パスワード
      .\setup.ps1                         ← 5 分ほど。最後に「準備完了」と出れば成功（ATF の実行設定も自動で入ります）
      .\preflight.ps1                     ← もう一度。全部 [OK] になることを確認
 4. ブラウザで All → Handson → Handson Todo board を開き、タスクを 1 つ作る

@@ -38,7 +38,7 @@ Check "atf-tests に CLAUDE.md がある" (Test-Path (Join-Path $KitRoot 'atf-te
 # 3. 接続先と PDI
 $authList = ""
 if ($null -ne $sdk) { $authList = (& now-sdk.cmd auth --list | Out-String) }
-Check "now-sdk に接続先 [$Auth] が登録されている" ($authList -match ('\[' + [regex]::Escape($Auth) + '\]')) "now-sdk auth --add --alias $Auth"
+Check "now-sdk に接続先 [$Auth] が登録されている" ($authList -match ('\[' + [regex]::Escape($Auth) + '\]')) "now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias $Auth"
 
 if ($null -ne $sdk -and $null -ne $state -and $state.todoScope) {
     $table = $state.todoScope + '_item'

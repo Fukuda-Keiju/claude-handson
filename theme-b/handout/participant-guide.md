@@ -42,7 +42,7 @@
 
 ```
 【接続の登録】自分のターミナル（atfNN フォルダで開いたもの）で次を打ちます。
-  now-sdk auth --add --alias handson
+  now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson
 質問が順に出ます。次のように答えてください。
   Instance URL      → https://dev192510.service-now.com
   Auth type         → basic を選ぶ（矢印キーで選んで Enter）
@@ -185,10 +185,10 @@ npm run build が通ることを確認してください。deploy はしない�
 
 | 症状 | 自分でやること |
 |---|---|
-| `now-sdk` が「このシステムではスクリプトの実行が無効」と赤字で出る | PowerShell で `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち、`Y` で答えて、もう一度 `now-sdk auth --add --alias handson` |
+| `now-sdk` が「このシステムではスクリプトの実行が無効」と赤字で出る | PowerShell で `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち、`Y` で答えて、もう一度 `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson` |
 | パスワードが違うと言われる | ホワイトボードの文字を確認。大文字小文字に注意 |
 | `claude` が「ログインしてください」と言う | `claude` の指示通りブラウザでログイン。1 分以上かかるときは隣の人と画面を共有して先に進む |
-| `npm run deploy` で auth のエラーが出る | `now-sdk auth --list` に `handson` があるか確認。無ければ `now-sdk auth --add --alias handson` をやり直す |
+| `npm run deploy` で auth のエラーが出る | `now-sdk auth --list` に `handson` があるか確認。無ければ `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson` をやり直す |
 | Run Test を押しても「Waiting for a test runner」のまま | ブラウザのポップアップブロック。アドレスバー右端のアイコンを押して許可し、もう一度 Run Test |
 | Client Test Runner のタブを閉じてしまった | もう一度 Run Test を押すと開き直します。UI テスト中は閉じない |
 | 一覧に他の人のタスクが混ざる | 自分のテストのタイトルに自分の番号を入れる。ATF は後片付けするので放置でよい |

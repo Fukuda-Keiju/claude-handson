@@ -4,10 +4,10 @@
 
 | 症状 | まず見る | 対処 |
 |---|---|---|
-| `now-sdk` が実行できない | PowerShell の赤いエラーに「スクリプトの実行が無効」 | `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち `Y`。もう一度 `now-sdk auth --add --alias handson` |
+| `now-sdk` が実行できない | PowerShell の赤いエラーに「スクリプトの実行が無効」 | `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` を打ち `Y`。もう一度 `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson` |
 | パスワードが違うと言われる | ホワイトボードの文字、大文字小文字 | 打ち直す。それでも通らなければ挙手 |
 | `claude` が「ログインしてください」と言う | claude の画面の指示 | 指示通りブラウザでログイン。1 分以上かかるなら隣の人と画面を共有して先に進む |
-| `npm run deploy` で auth エラー | `now-sdk auth --list` に `handson` があるか | 無ければ自分のターミナルで `now-sdk auth --add --alias handson` |
+| `npm run deploy` で auth エラー | `now-sdk auth --list` に `handson` があるか | 無ければ自分のターミナルで `now-sdk auth --add https://dev192510.service-now.com --type basic --alias handson` |
 | Run Test で Runner が開かない | ブラウザのポップアップブロック | 許可して再度 Run Test。または All → ATF → Client Test Runner を手で開く |
 | Client Test Runner のタブを閉じた | UI テストが止まっている | もう一度 Run Test。以後はタブを閉じない |
 | 他人のレコードでテストが失敗 | 一覧に他番号のタスクが混ざっていないか | テストのタイトルに自分の番号を入れる。ATF はロールバックするので放置でよい |
