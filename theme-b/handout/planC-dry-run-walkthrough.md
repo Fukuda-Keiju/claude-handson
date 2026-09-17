@@ -25,19 +25,16 @@
 
 1. ブラウザで https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v2 を開き、Assets の `themeB-kit.zip` をダウンロード。
 2. ダウンロードした zip を右クリック → 「すべて展開」→ 展開先を **デスクトップ** にして展開。
-3. できた `themeB-kit` フォルダを開く。中に `setup.ps1` が見えることを確認。
+3. できた `themeB-kit` フォルダを開く。中に `setup.mjs` が見えることを確認。
 4. その場所の何もない所で右クリック → 「ターミナルで開く」。
-5. 開いたターミナルで次を打つ（出力は何も出ない）。
-   ```
-   Get-ChildItem -Recurse *.ps1 | Unblock-File
-   ```
+5. 以降のスクリプトは **Node 版（`node setup.mjs` など）** を使う。PowerShell の実行ポリシーやダウンロード由来のブロックに当たらない。
 
-**成功の目印**: プロンプトのパスが `\themeB-kit>` で終わり、`dir` で `setup.ps1` `preflight.ps1` `todo-app` `atf-tests` が見える。
+**成功の目印**: プロンプトのパスが `\themeB-kit>` で終わり、`dir` で `setup.mjs` `preflight.mjs` `todo-app` `atf-tests` が見える。
 
 🆘
-- `themeB-kit\themeB-kit` と二重になった → 内側（`setup.ps1` がある方）で「ターミナルで開く」。
+- `themeB-kit\themeB-kit` と二重になった → 内側（`setup.mjs` がある方）で「ターミナルで開く」。
 - 「ターミナルで開く」が出ない → スタート → 「ターミナル」→ `cd $HOME\Desktop\themeB-kit`。
-- 手順 5 を忘れて次の `setup.ps1` が「デジタル署名されていません / UnauthorizedAccess」→ 手順 5 を打ってからやり直す（2026-09-17 パイロット PC で発生）。急ぐなら `powershell -ExecutionPolicy Bypass -File .\setup.ps1`。
+- どうしても PowerShell 版（`.\setup.ps1`）を使う場合 → 先に `Get-ChildItem -Recurse *.ps1 | Unblock-File` を打つ。打たないと「デジタル署名されていません / UnauthorizedAccess」で止まる（2026-09-17 パイロット PC で発生）。管理ポリシーで実行が固定された PC では Unblock-File でも通らないので、Node 版を使う。
 
 ---
 
@@ -70,7 +67,7 @@
 
 8. 同じターミナルで実行。4〜5 分。
    ```
-   .\setup.ps1
+   node .\setup.mjs
    ```
    走っている間に出る行と意味:
    - `会社コード = NNNNNNN` → 講師の `2221398` と**違う数字**であることを確認（メモしておく）
@@ -84,9 +81,9 @@
 **成功の目印**: 緑で「準備完了です。」。所要時間を記録（講師 PDI では 292 秒）。
 
 🆘
-- 「会社コードを読めませんでした」→ PDI 休止か接続先違い。ブラウザで PDI にログイン → `.\setup.ps1`（済んだ工程は飛ぶ）。
-- `Unable to install application as application was null` → 接続先が別の PDI を指している。`now-sdk auth --list` の URL を確認 → 直して `.\setup.ps1 -SkipNpm`。
-- `npm ci` でネットワークエラー → Wi-Fi 確認 → `.\setup.ps1`（npm ci からやり直す）。
+- 「会社コードを読めませんでした」→ PDI 休止か接続先違い。ブラウザで PDI にログイン → `node .\setup.mjs`（済んだ工程は飛ぶ）。
+- `Unable to install application as application was null` → 接続先が別の PDI を指している。`now-sdk auth --list` の URL を確認 → 直して `node .\setup.mjs --skip-npm`。
+- `npm ci` でネットワークエラー → Wi-Fi 確認 → `node .\setup.mjs`（npm ci からやり直す）。
 - build が型エラーで止まる → エラー先頭 3 行を記録。キット側の問題なので講師が調べる。
 - 黄色で「自動設定に失敗」→ PDI で All → `sys_properties.list` → `sn_atf.runner.enabled` と `sn_atf.schedule.enabled` を `true` に。
 
@@ -96,12 +93,12 @@
 
 9. 続けて実行。
    ```
-   .\preflight.ps1
+   node .\preflight.mjs
    ```
 
 **成功の目印**: 12 項目すべて `[OK]`、「準備完了です。この画面のスクリーンショットを講師に送ってください。」
 
-🆘 `[NG]` の行は `->` の後ろに直し方がある。多いのは「接続先が未登録」（手順 6）と「アプリが入っていない」（PDI が休止 → ログインして `.\setup.ps1`）。
+🆘 `[NG]` の行は `->` の後ろに直し方がある。多いのは「接続先が未登録」（手順 6）と「アプリが入っていない」（PDI が休止 → ログインして `node .\setup.mjs`）。
 
 ---
 
@@ -110,7 +107,7 @@
 10. PDI のブラウザで、左上 **All** → 検索欄に `Handson` → **Handson Todo board**。
 11. **New** → タイトルを入れて **Save** → 一覧に出る。ボードでカードを隣の列に動かす。開く、消す。**空タイトルの保存は試さない**（試すと後半のネタバレ。試験では 1 回だけ試して「保存できてしまう」ことを確認してもよい）。
 
-🆘 メニューに Handson が出ない → F5。それでも出なければ deploy が入っていない → `.\setup.ps1 -SkipNpm`。
+🆘 メニューに Handson が出ない → F5。それでも出なければ deploy が入っていない → `node .\setup.mjs --skip-npm`。
 
 ---
 
@@ -156,7 +153,7 @@ CLAUDE.md のルールに従って、次の 3 本の ATF テストと、それ�
 **成功の目印**: 3 本とも緑。**UI テストが緑になったか**を記録（未確認項目）。
 
 🆘
-- deploy が赤字 → 先頭 3 行を読む。`401`/`auth` → 手順 6 をやり直す。`scopeId` → `.\setup.ps1 -SkipNpm -SkipInstall`（atf-tests 側の scopeId を採り直す。1 分）。
+- deploy が赤字 → 先頭 3 行を読む。`401`/`auth` → 手順 6 をやり直す。`scopeId` → `node .\setup.mjs --skip-npm --skip-install`（atf-tests 側の scopeId を採り直す。1 分）。
 - Run Test の後「Waiting for a test runner」のまま → ポップアップがブロックされている。アドレスバー右端のアイコンで許可 → もう一度 Run Test。または All → Automated Test Framework → **Client Test Runner** を手で開く。
 - UI テストが Pending のまま → ATF 設定が false。キットのフォルダで `node set-atf-props.mjs mypdi`、または `sys_properties.list` で 2 つを true。
 - UI テストだけ赤（要素が見つからない）→ PDI のバージョン差の可能性。赤いステップの Output とスクリーンショットを記録。サーバー側 2 本が緑なら先へ進む。
@@ -233,14 +230,14 @@ npm run build が通ることを確認してください。deploy はしない�
 🆘
 - 4 分たっても終わらない、build が落ち続ける → Esc → `themeB-kit`（todo-app の 1 つ上）で
   ```
-  .\fix.ps1
+  node .\fix.mjs
   cd todo-app
   npm run build
   npm run deploy
   ```
-- `fix.ps1` が「setup.ps1 がまだ実行されていません」→ 別のフォルダで打っている。デスクトップの `themeB-kit` を開き直す。
-- deploy が `scopeId` で失敗 → `.\setup.ps1 -SkipNpm`（todo-app 側を採り直す。1 分半）。
-- Claude が `keys.ts` や `now.config.json` を触った → `CLAUDE.md` のルール違反。記録して `fix.ps1` で上書き。
+- `node .ix.mjs` が「setup がまだ実行されていません」→ 別のフォルダで打っている。デスクトップの `themeB-kit` を開き直す。
+- deploy が `scopeId` で失敗 → `node .\setup.mjs --skip-npm`（todo-app 側を採り直す。1 分半）。
+- Claude が `keys.ts` や `now.config.json` を触った → `CLAUDE.md` のルール違反。記録して `node .ix.mjs` で上書き。
 
 ---
 
@@ -253,16 +250,16 @@ npm run build が通ることを確認してください。deploy はしない�
 **成功の目印**: Negative 緑、Positive 緑のまま。これで「緑 → 赤 → 直して緑」が一巡。
 
 🆘
-- Negative が赤のまま → deploy 完了前に押している。30 秒待って再実行。それでも赤なら Output を見る。「Inserted record」なら `todo-app\src\server\business-rules\validate-title.ts` に `setAbortAction` があるか確認 → 無ければ `fix.ps1`。
-- Positive が赤になった → AI が既存の動きを壊した。差分を記録し、`fix.ps1` で上書き → build → deploy → 再テスト。
+- Negative が赤のまま → deploy 完了前に押している。30 秒待って再実行。それでも赤なら Output を見る。「Inserted record」なら `todo-app\src\server\business-rules\validate-title.ts` に `setAbortAction` があるか確認 → 無ければ `node .ix.mjs`。
+- Positive が赤になった → AI が既存の動きを壊した。差分を記録し、`node .ix.mjs` で上書き → build → deploy → 再テスト。
 
 ---
 
 ## 12. 試験後の後始末（本番で同じ PC・PDI を使う場合は必須）
 
-33. 欠陥版に戻して本番の初期状態にする場合: `themeB-kit` で `.\reset.ps1` → `cd todo-app` → `npm run build` → `npm run deploy`。Tests 一覧で Negative を Run Test すると赤に戻る。
+33. 欠陥版に戻して本番の初期状態にする場合: `themeB-kit` で `node .\reset.mjs` → `cd todo-app` → `npm run build` → `npm run deploy`。Tests 一覧で Negative を Run Test すると赤に戻る。
 34. PC を「キット未展開・接続未登録」に戻す場合: デスクトップの `themeB-kit` と zip を削除 → `now-sdk auth --delete mypdi`。
-35. PDI を「アプリなし」に戻す場合: PDI で All → `sys_app.list` → **Handson Todo** と **ATF Handson** を開いて Delete（Delete で関連テーブル・テスト・レコードも消える）。本番で同じ PDI を使うなら必ず行う。残っていると `setup.ps1` が「既にあります」で通り抜け、欠陥版が入らない。
+35. PDI を「アプリなし」に戻す場合: PDI で All → `sys_app.list` → **Handson Todo** と **ATF Handson** を開いて Delete（Delete で関連テーブル・テスト・レコードも消える）。本番で同じ PDI を使うなら必ず行う。残っていると `setup.mjs` が「既にあります」で通り抜け、欠陥版が入らない。
 
 ---
 
@@ -270,7 +267,7 @@ npm run build が通ることを確認してください。deploy はしない�
 
 | 場面 | 記録 |
 |---|---|
-| 手順 8 | `setup.ps1` の合計秒数、会社コード、ATF 設定が false → true になったか |
+| 手順 8 | `node setup.mjs` の合計秒数、会社コード、ATF 設定が false → true になったか |
 | 手順 14 | プロンプト①の所要時間、Yes の回数、3 本目の内容 |
 | 手順 20 | UI テストが緑になったか、Runner タブの挙動 |
 | 手順 25 | Negative が赤になったか、Output の文言 |

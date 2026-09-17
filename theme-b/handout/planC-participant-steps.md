@@ -7,7 +7,7 @@
 
 ## 0. 通し試験をする前に（講師向けの注意）
 
-- **講師 PDI（`dev192510`、会社コード 2221398）で試すときは、必ず `.\setup.ps1 -ScopeSuffix 3` のように接尾辞を付ける。** 付けずに実行すると、講師用アプリ `x_2221398_todo` と同じスコープに欠陥版を deploy してしまい、ID の違う Business Rule・メニュー・UI Page が重複する。接尾辞 2 は既に使用済み（`x_2221398_todo2` は今は修正版）。
+- **講師 PDI（`dev192510`、会社コード 2221398）で試すときは、必ず `node .\setup.mjs --scope-suffix 3` のように接尾辞を付ける。** 付けずに実行すると、講師用アプリ `x_2221398_todo` と同じスコープに欠陥版を deploy してしまい、ID の違う Business Rule・メニュー・UI Page が重複する。接尾辞 2 は既に使用済み（`x_2221398_todo2` は今は修正版）。
 - 別の PDI（会社コードが違う）で試すときは接尾辞なしでよい。それが本番の参加者と同じ条件。
 - 必要なもの: PDI の URL と admin パスワード、Node.js LTS、`@servicenow/sdk`、`@anthropic-ai/claude-code`（Anthropic アカウントでログイン済み）、キット `theme-b/dist/kit/themeB-kit.zip`。
 
@@ -35,7 +35,7 @@
    now-sdk --version
    claude --version
    ```
-4. **キットを展開する。** `themeB-kit.zip` をデスクトップに置き、右クリック → 「すべて展開」。`Desktop\themeB-kit` の中に `setup.ps1` があることを確認する。二重フォルダ（`themeB-kit\themeB-kit`）になっていたら内側を使う。
+4. **キットを展開する。** `themeB-kit.zip` をデスクトップに置き、右クリック → 「すべて展開」。`Desktop\themeB-kit` の中に `setup.mjs` があることを確認する。二重フォルダ（`themeB-kit\themeB-kit`）になっていたら内側を使う。
 5. **キットのフォルダをターミナルで開く。** `themeB-kit` を開き、何もない所で右クリック → 「ターミナルで開く」。プロンプトのパスが `themeB-kit` で終わっていることを確認する。
 6. **接続先を登録する。** `devXXXXXX` を自分の PDI に置き換えて打ち、質問に順番に答える（URL を省くと `Missing required argument for --add` で止まる）。
    ```
@@ -47,9 +47,10 @@
    確認は `now-sdk auth --list`。`[mypdi]` が出れば OK。
 7. **セットアップを実行する。** 5 分ほど（2026-09-16 実測 292 秒）。最後に緑で「準備完了です。」と出れば成功。
    ```
-   .\setup.ps1
+   node .\setup.mjs
    ```
-   「このシステムではスクリプトの実行が無効になっている」と出たら、次を打って `Y` → もう一度 `.\setup.ps1`。
+   Node 版なので PowerShell の実行ポリシーやダウンロード由来のブロックには当たらない（PowerShell 版 `.\setup.ps1` は代替。使う場合は先に `Get-ChildItem -Recurse *.ps1 | Unblock-File`）。
+   手順 6 の `now-sdk` を打ったときに「このシステムではスクリプトの実行が無効になっている」と出たら、`now-sdk.cmd auth --add ...` のように `.cmd` を付けて打つか、次を打って `Y` → もう一度。
    ```
    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
    ```
@@ -57,14 +58,14 @@
 8. **黄色で「自動設定に失敗」と出たときだけ**、PDI で All → 検索欄に `sys_properties.list` → `sn_atf.runner.enabled` と `sn_atf.schedule.enabled` を開いて Value を `true` にする。
 9. **チェックを実行する。** 全部 `[OK]` で「準備完了です。この画面のスクリーンショットを講師に送ってください。」と出れば完了。
    ```
-   .\preflight.ps1
+   node .\preflight.mjs
    ```
    `[NG]` の行は `->` の後ろに直し方が書いてある。それに従って直し、もう一度実行する（下表も参照）。
 10. **アプリが入ったか PDI で確認する。** ブラウザで PDI にログイン → All → 検索欄に `Handson` → **Handson Todo board** → **New** → タイトルを入れて **Save**。一覧にタスクが出れば OK。
 11. **Claude Code のログインを済ませる。** `themeB-kit\atf-tests` を「ターミナルで開く」→ `claude` → 指示どおりブラウザでログイン → 入力欄が出たら `/exit`。当日ここで時間を使わないための準備。
 12. **提出する。** 手順 9 と 10 のスクリーンショットを講師に送る（前日 17:00 まで）。
 
-### preflight.ps1 が見ている項目
+### preflight.mjs が見ている項目
 
 すべて `[OK]` になる必要がある。
 
@@ -74,18 +75,18 @@
 | now-sdk が入っている | `npm install -g @servicenow/sdk` |
 | PowerShell 実行ポリシーが RemoteSigned 以上 | 手順 7 の `Set-ExecutionPolicy` |
 | Claude Code (claude) が入っている | `npm install -g @anthropic-ai/claude-code` |
-| setup.ps1 がある（themeB-kit フォルダで実行している） | `themeB-kit` で「ターミナルで開く」をやり直す |
-| setup.ps1 を実行済み（.setup-state.json がある） | `.\setup.ps1` |
-| todo-app の scopeId が入っている | `.\setup.ps1` |
-| atf-tests の npm install 済み（node_modules がある） | `.\setup.ps1` |
+| setup.mjs がある（themeB-kit フォルダで実行している） | `themeB-kit` で「ターミナルで開く」をやり直す |
+| setup を実行済み（.setup-state.json がある） | `node .\setup.mjs` |
+| todo-app の scopeId が入っている | `node .\setup.mjs` |
+| atf-tests の npm install 済み（node_modules がある） | `node .\setup.mjs` |
 | atf-tests に CLAUDE.md がある | zip を展開し直す |
 | now-sdk に接続先 [mypdi] が登録されている | 手順 6 |
-| 自分の PDI にアプリが入っている | PDI にログインして起こし、`.\setup.ps1` をもう一度 |
+| 自分の PDI にアプリが入っている | PDI にログインして起こし、`node .\setup.mjs` をもう一度 |
 | ATF の実行設定 2 つが true | 手順 8 |
 
 ### Mac の参加者
 
-`.ps1` の代わりに Node.js 版を使う。手順 7 は `node setup.mjs`。preflight の Node 版は無いので、`node setup.mjs` の最後に「準備完了です」が出た画面と手順 10 のスクリーンショットを送る。当日の予備 `fix.ps1` は `node fix.mjs`。
+手順は Windows と同じ。`node setup.mjs`、`node preflight.mjs`、`node fix.mjs`、`node reset.mjs` は Windows / macOS / Linux 共通で動く（Node 版が推奨。PowerShell 版 `.ps1` は Windows のみの代替）。
 
 ---
 
@@ -94,7 +95,7 @@
 ### 開始前 10 分
 
 1. 自分の PDI にブラウザでログインしておく（休止から起こす）。
-2. `themeB-kit` を「ターミナルで開く」→ `.\preflight.ps1`。
+2. `themeB-kit` を「ターミナルで開く」→ `node .\preflight.mjs`。
 3. 全部 `[OK]` ならチャットに「OK」。`[NG]` があればその行をそのまま貼る。
 
 ### 0〜5 分　Claude Code を起動
@@ -202,7 +203,7 @@ npm run build が通ることを確認してください。deploy はしない�
 
 （予備）47 分になっても修正が終わらない、build が落ちる → `claude` を Esc で止め、`themeB-kit`（todo-app の 1 つ上）を「ターミナルで開く」→
 ```
-.\fix.ps1
+node .\fix.mjs
 cd todo-app
 npm run build
 npm run deploy
@@ -223,7 +224,7 @@ npm run deploy
 
 | 場面 | 見るもの | 実測メモ |
 |---|---|---|
-| 事前課題 6 | `setup.ps1` の合計秒数（見立て 5 分。2026-09-16 実測 292 秒） | |
+| 事前課題 6 | `node setup.mjs` の合計秒数（見立て 5 分。2026-09-16 実測 292 秒） | |
 | 当日 8 | プロンプト①の所要時間と Yes を押した回数（見立て 5〜8 分） | |
 | 当日 13〜16 | Runner タブが開くか。UI テストが緑になるか（**未確認項目**） | |
 | 当日 21 | プロンプト②で Negative が生成され、赤になるか | |
