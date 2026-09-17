@@ -93,6 +93,16 @@ foreach ($rel in $fixFiles) {
 }
 Write-Host "[OK] fix（theme-b-fix の 3 ファイル）"
 
+# --- buggy: theme-b-buggy の同じ 3 ファイル（reset.ps1 / reset.mjs が欠陥版に戻すときに使う） ---
+foreach ($rel in $fixFiles) {
+    $dst = Join-Path $Kit ('buggy\' + $rel.Replace('/', '\'))
+    New-Item -ItemType Directory -Path (Split-Path -Parent $dst) -Force | Out-Null
+    $content = & git -C $Repo show ("theme-b-buggy:theme-b/todo-app/" + $rel)
+    if ($LASTEXITCODE -ne 0) { throw "git show に失敗: $rel" }
+    [System.IO.File]::WriteAllText($dst, (($content -join "`n") + "`n"), $Utf8NoBom)
+}
+Write-Host "[OK] buggy（theme-b-buggy の 3 ファイル）"
+
 # --- checkpoint / solution ---
 Copy-Item (Join-Path $ThemeB 'handout\checkpoint') (Join-Path $Kit 'checkpoint') -Recurse
 Copy-Item (Join-Path $ThemeB 'handout\solution') (Join-Path $Kit 'solution') -Recurse
@@ -104,7 +114,7 @@ Get-ChildItem (Join-Path $Kit 'checkpoint'), (Join-Path $Kit 'solution') -Recurs
 Write-Host "[OK] checkpoint / solution"
 
 # --- scripts ---
-foreach ($f in @('setup.ps1', 'fix.ps1', 'preflight.ps1', 'set-atf-props.mjs', 'README.md')) {
+foreach ($f in @('setup.ps1', 'fix.ps1', 'reset.ps1', 'preflight.ps1', 'setup.mjs', 'fix.mjs', 'reset.mjs', 'set-atf-props.mjs', 'README.md')) {
     Copy-Item (Join-Path $ThemeB ('kit\' + $f)) (Join-Path $Kit $f)
 }
 Write-Host "[OK] scripts"

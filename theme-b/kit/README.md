@@ -9,6 +9,9 @@
 | `setup.ps1` | 事前課題で 1 回実行。自分の PDI に合わせてスコープ名を書き換え、欠陥版アプリを PDI に入れる |
 | `preflight.ps1` | 準備ができているかの自動チェック。全部 OK のスクリーンショットを提出 |
 | `fix.ps1` | **予備。** 当日、AI での修正が時間内に終わらなかったときだけ講師の指示で実行。アプリの修正（3 ファイル）を上書きする |
+| `reset.ps1` | 修正したアプリを**欠陥版に戻す**（`buggy/` の 3 ファイルを上書き）。ハンズオン PC を次の人に渡す前に使う。続けて `cd todo-app; npm run build; npm run deploy` |
+| `setup.mjs` / `fix.mjs` / `reset.mjs` | 上の 3 つの **macOS / Linux 用**（Node.js 版。Windows でも動く）。Mac では `node setup.mjs`、`node fix.mjs`、`node reset.mjs` と打つ。オプションは `.ps1` 版と同じ（`--auth mypdi --scope-suffix 2 --skip-install --skip-npm`） |
+| `buggy/` | 欠陥版の 3 ファイル（`reset` が使う） |
 | `todo-app/` | テスト対象のアプリ「Handson Todo」（**わざと欠陥が入った版**）。当日の後半、ここで AI（Claude Code）に修正させる |
 | `atf-tests/` | 当日、AI（Claude Code）にテストを書かせる場所。最初は空 |
 | `fix/` | アプリの修正版ファイル（`fix.ps1` が使う。中を先に読まないでください） |

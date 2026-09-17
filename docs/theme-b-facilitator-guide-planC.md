@@ -59,6 +59,9 @@ themeB-kit/
   setup.ps1            # 会社コード取得 → 接頭辞置換 → scopeId 採取 → npm ci → build → deploy（todo-app）→ npm ci → build（atf-tests）→ ATF 設定
   set-atf-props.mjs    # setup.ps1 から呼ばれ、sn_atf.runner.enabled / schedule.enabled を true にする
   fix.ps1              # 予備。fix/ の 3 ファイルを todo-app/src/ に上書きし、直した行を表示
+  reset.ps1            # 欠陥版に戻す（buggy/ の 3 ファイルを上書き）。ハンズオン PC を次の人に渡す前に
+  setup.mjs / fix.mjs / reset.mjs   # 上 3 つの Node 版（macOS / Linux 用。Windows でも動く。Mac mini はこれを使う）
+  buggy/src/...        # 欠陥版の 3 ファイル（reset が使う）
   todo-app/            # 欠陥版（theme-b-buggy のスナップショット。keys.ts と node_modules なし）
     CLAUDE.md          # 43 分に Claude Code で直すときの説明書（kit/todo-app-CLAUDE.md が元。ルール・ファイル配置・スコープ付き API の注意・画面の要素名）
   atf-tests/           # 空の Fluent プロジェクト + CLAUDE.md + docs/（spec.md は入れない）
