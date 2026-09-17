@@ -21,8 +21,8 @@ v2（`theme-b-script-planC-50min-v2.md`）を次の条件で組み直した。**
 | # | 状態 | 確認方法 |
 |---|---|---|
 | 1 | Node.js LTS、`@servicenow/sdk`、Claude Code（**ログイン済み**）が入っている | ターミナルで `node -v` / `now-sdk -v` / `claude` が起動する |
-| 2 | デスクトップに `themeB-kit` を展開し、`setup.ps1`（Mac は `node setup.mjs`）を通してある。その PC 用の PDI に**欠陥版**の Handson Todo が入っている。**ブラウザで落とした zip を展開した直後は、ターミナルで `Get-ChildItem -Recurse *.ps1 \| Unblock-File` を 1 回打ってから `setup.ps1` を実行する**（打たないと「デジタル署名されていません / UnauthorizedAccess」で止まる。2026-09-17 のパイロット PC で発生） | `preflight.ps1` 全 [OK]（Mac は 0.3 参照） |
-| 3 | `atf-tests\src\fluent\atf\` は**空**（`setup.ps1` が build まで済ませてある）。参加者は Claude Code を開いてすぐテストを書かせる。**`checkpoint` の 3 本は入れない**（入れると生成が「既にある」と判断されて短くなる） | エクスプローラーで見る |
+| 2 | デスクトップに `themeB-kit` を展開し、**`node setup.mjs`** を通してある（Windows / Mac 共通。PowerShell の `.ps1` 版は使わない。実行ポリシーや「デジタル署名されていません」のブロックに当たらない）。その PC 用の PDI に**欠陥版**の Handson Todo が入っている。手順: `now-sdk auth --add https://devXXXXXX.service-now.com --type basic --alias mypdi` → `node setup.mjs`（4〜5 分） | `node preflight.mjs` 全 [OK] |
+| 3 | `atf-tests\src\fluent\atf\` は**空**（`node setup.mjs` が build まで済ませてある）。参加者は Claude Code を開いてすぐテストを書かせる。**`checkpoint` の 3 本は入れない**（入れると生成が「既にある」と判断されて短くなる） | エクスプローラーで見る |
 | 4 | `atf-tests\docs\spec.md` に仕様書 5 行を置いてある（37 分時点で全員が仕様書を見ているので、参加者はすぐ Negative を頼める） | エクスプローラーで見る |
 | 5 | ブラウザ（Chrome）でその PDI に `admin` でログイン済み。タブ 1 = Handson Todo board、タブ 2 = Automated Test → Tests（Application「ATF Handson」で絞った状態）。ポップアップブロックは PDI のドメインで許可 | 一度 Run Test して Client Test Runner のタブが開くことを確認し、閉じる |
 | 6 | ターミナルを 1 つ開き、`themeB-kit\atf-tests` フォルダにいる状態（座った人が `claude` と打つだけで始められる） | |
@@ -33,7 +33,7 @@ v2（`theme-b-script-planC-50min-v2.md`）を次の条件で組み直した。**
 
 ### 0.2 各 PC の PDI
 
-1 台に 1 つ、**会社コードが講師と違う PDI**。持ち主（お世話係・技術相談・貸してくれる同僚）に前日までに `admin` パスワードをもらい、講師が `setup.ps1` を通す。終了後は持ち主に「Handson Todo と ATF Handson の 2 アプリを Delete してよい」と伝える（自分で消したい人のために `sys_app.list` の場所を書いた 1 行メモを渡す）。
+1 台に 1 つ、**会社コードが講師と違う PDI**。持ち主（お世話係・技術相談・貸してくれる同僚）に前日までに `admin` パスワードをもらい、講師が `node setup.mjs` を通す。終了後は持ち主に「Handson Todo と ATF Handson の 2 アプリを Delete してよい」と伝える（自分で消したい人のために `sys_app.list` の場所を書いた 1 行メモを渡す）。
 
 ### 0.3 Mac mini の利用可否
 
@@ -42,8 +42,8 @@ v2（`theme-b-script-planC-50min-v2.md`）を次の条件で組み直した。**
 | 項目 | 状況 |
 |---|---|
 | ServiceNow SDK（`now-sdk`）、Claude Code、Node.js | すべて macOS 対応。ビルドが使う部品（`@swc/core`、`@parcel/watcher`、`libxmljs2`）も macOS 用のバイナリがある |
-| `setup.ps1` / `fix.ps1` / `reset.ps1` / `preflight.ps1` | **Windows 専用**（`now-sdk.cmd`、`npm.cmd`、`node.exe` を直接呼ぶ）。Mac では動かない |
-| **`setup.mjs` / `fix.mjs` / `reset.mjs`（Node 版。今回追加）** | macOS / Linux / Windows 共通。**Windows では `setup.ps1` と同じ結果になることを確認済み**。**Mac 実機ではまだ動かしていない** |
+| `setup.ps1` / `fix.ps1` / `reset.ps1` / `preflight.ps1` | **Windows 専用**（`now-sdk.cmd`、`npm.cmd`、`node.exe` を直接呼ぶ）。Mac では動かない。**この版では Windows でも使わない**（Node 版に統一） |
+| **`setup.mjs` / `preflight.mjs` / `fix.mjs` / `reset.mjs`（Node 版）** | macOS / Linux / Windows 共通。**Windows では `.ps1` 版と同じ結果になることを確認済み**（setup / preflight / fix / reset の 4 本とも 2026-09-17 に実行）。**Mac 実機ではまだ動かしていない** |
 | Client Test Runner（UI テスト） | ブラウザで動くので Mac の Chrome で動く見込み。未確認 |
 
 **Mac mini を使うなら**: 木曜のうちに 1 台で次を通す。通れば残りの Mac も同じ手順。通らなければ Mac は「講師の画面を見る席」にして Windows 4 台だけで回す。
@@ -316,7 +316,7 @@ npm run build が通ることを確認してください。deploy はしない�
 `npm run build` が走っているとき:
 「なぜサーバー側が本命か。画面のチェックだけだと、API やスクリプトから入れたレコードは素通りします。だから保存の直前にサーバーでもう一度確かめる。」
 
-⏱ **34 分の判断**: AI の修正が終わっていなければ Esc で止め、`.\fix.ps1` → `cd todo-app` → `npm run build` → `npm run deploy`。「AI の修正は時間がかかることがあるので、同じ内容の完成版を入れます。中身は今 AI が書こうとしていたものと同じです」と言い、`fix.ps1` が表示する 3 行を読む。
+⏱ **34 分の判断**: AI の修正が終わっていなければ Esc で止め、`node fix.mjs` → `cd todo-app` → `npm run build` → `npm run deploy`。「AI の修正は時間がかかることがあるので、同じ内容の完成版を入れます。中身は今 AI が書こうとしていたものと同じです」と言い、`fix.mjs` が表示する 3 行を読む。
 
 🖱 **講師の操作**: `npm run build` → `npm run deploy`（約 1 分）。タブ B で Negative を **Run Test** → 緑。続けて Positive のサーバー側 1 本（T1）を **Run Test** → 緑のまま。
 
@@ -337,7 +337,7 @@ npm run build が通ることを確認してください。deploy はしない�
 🖱 **講師の操作**
 1. Zoom 共有を **1 番の PC**（HDMI 分配かカメラ）に切り替える。難しければ講師の画面で 8 章の再テスト画面を映したままにする。
 2. 講師は巡回。Zoom 担当（またはお世話係 1 名）が PC 1〜4、講師が 5〜7 を見る。
-3. **次の人が座るときのリセットは基本不要。** テストは前の人の分に追加されるだけで、アプリは欠陥版のまま（赤は何度でも出る）。前の人が「余裕があれば」の修正まで進めて緑にしてしまった PC だけ、`reset.ps1`（Mac は `node reset.mjs`）→ `cd todo-app` → `npm run build` → `npm run deploy`（約 1 分）で欠陥版に戻す。講師か Zoom 担当がやる。
+3. **次の人が座るときのリセットは基本不要。** テストは前の人の分に追加されるだけで、アプリは欠陥版のまま（赤は何度でも出る）。前の人が「余裕があれば」の修正まで進めて緑にしてしまった PC だけ、`node reset.mjs` → `cd todo-app` → `npm run build` → `npm run deploy`（約 1 分）で欠陥版に戻す。講師か Zoom 担当がやる。
 4. Claude Code の生成中（3〜4 分）が空き時間になる。講師はその PC を離れ、他の PC を見る。生成が終わった人には「build が通りました、と出たら次の行へ」と声をかける。
 
 👥（チャットにも貼る。机のカードと同じ）
@@ -358,17 +358,17 @@ npm run build が通ることを確認してください。deploy はしない�
    Positive を開き Run Test → Run Test → 緑（Success）。
    Negative を開き Run Test → Run Test → 赤（Failure）。下の赤いステップを開き、Output を読む。「Inserted record」＝空欄なのに保存された＝アプリの欠陥。
 4. 終わったら講師に「赤が出ました」と一声。次の方に席を譲る。
-余裕があれば（+3 分）: themeB-kit フォルダのターミナルで  .\fix.ps1（Mac:  node fix.mjs）→  cd todo-app  →  npm run build  →  npm run deploy。Negative をもう一度 Run Test → 緑。終わったら講師に「直しました」と伝える（次の人のために欠陥版に戻します）。
+余裕があれば（+3 分）: themeB-kit フォルダのターミナルで  node fix.mjs  →  cd todo-app  →  npm run build  →  npm run deploy。Negative をもう一度 Run Test → 緑。終わったら講師に「直しました」と伝える（次の人のために欠陥版に戻します）。
 ```
 
 ⏱ 45 分に「あと 2 分です。今の工程が終わったところで止めてください」。47 分で締めに入る。**触っている人が途中でも止める。** 「続きは後日、キットで同じことができます。」
 
 🆘
-- `fix.ps1` が「setup.ps1 がまだ実行されていません」→ 別のフォルダで打っている。デスクトップの `themeB-kit` で打ち直す。
-- `npm run deploy` が失敗 → 講師を呼ぶ。`scopeId` なら `.\setup.ps1 -SkipNpm`（Mac は `node setup.mjs --skip-npm`）。1 分半。
+- `node fix.mjs` が「setup がまだ実行されていません」→ 別のフォルダで打っている。デスクトップの `themeB-kit` で打ち直す。
+- `npm run deploy` が失敗 → 講師を呼ぶ。`scopeId` なら `node setup.mjs --skip-npm`。1 分半。
 - Run Test で Runner が開かない → ポップアップブロックを許可して再度。
 - 再テストが赤のまま → deploy 完了前に押している。30 秒待って再度。
-- 前の人が修正済みで Negative が最初から緑 → `reset.ps1` → build → deploy で戻す（1 分）。時間がなければ「この PC は修正済みです。Output の読み方と回帰確認だけ見てください」。
+- 前の人が修正済みで Negative が最初から緑 → `node reset.mjs` → build → deploy で戻す（1 分）。時間がなければ「この PC は修正済みです。Output の読み方と回帰確認だけ見てください」。
 - Mac で `now-sdk` が見つからない → PATH の問題。`npx @servicenow/sdk ...` に読み替える（`npm run build` / `deploy` は package.json 経由なので影響なし）。
 - 希望者がいない → 講師が 1 番の PC で 1 周やり、その間に質問を受ける。
 
@@ -380,7 +380,7 @@ npm run build が通ることを確認してください。deploy はしない�
 「まとめます。AI はテストを速く書けます。今日 3 本を 8 分で書きました。でも、何が正しいかを決めるのは仕様です。AI はそれを知りません。仕様書を渡すまで、空欄のテストは 1 本も出てきませんでした。その差を作ったのは紙 1 枚です。そして、テストが見つけた欠陥は、同じやり方で AI に直させ、再テストで確かめられました。持ち帰ってほしいのは 3 つ。1 つ、仕様を先に渡す。2 つ、Negative を必ず頼む。3 つ、赤が出たら 4 分類で考える。」
 
 🗣 **言う（資料の案内。30 秒）**
-「今日のアプリ、テスト、キット、プロンプトの文面は、すべて GitHub で公開しています。URL をチャットに貼ります。キットを展開して `setup.ps1` を 1 本走らせると、ご自身の PDI に今日と同じ環境ができます。4〜5 分です。詳しい手順はキットの README と `atf-knowledge.md` にあります。振り返りとアンケートは、この後の時間でお願いします。ありがとうございました。」
+「今日のアプリ、テスト、キット、プロンプトの文面は、すべて GitHub で公開しています。URL をチャットに貼ります。キットを展開して `node setup.mjs` を 1 本走らせると、ご自身の PDI に今日と同じ環境ができます。4〜5 分です。詳しい手順はキットの README と `atf-knowledge.md` にあります。振り返りとアンケートは、この後の時間でお願いします。ありがとうございました。」
 
 👥
 ```
@@ -399,7 +399,7 @@ npm run build が通ることを確認してください。deploy はしない�
 1. 3 章の「なぜ講師が環境を用意したか」を 30 秒に。
 2. 4 章の生成待ちを **15 分で打ち切り**、Checkpoint に切り替える（実況は完成品を読む）。
 3. 7 章のプロンプト②をやめ、「ATF Handson 09」の完成品 T4 を Run Test して赤を見せる（3 分短縮）。
-4. 8 章のプロンプト③をやめ、`fix.ps1` で入れる（3 分短縮）。
+4. 8 章のプロンプト③をやめ、`node fix.mjs` で入れる（3 分短縮）。
 5. 9 章のハンズオンを 7 分に（45 分で締めに入る）。**ゼロにはしない。** 希望者が 1 人でもいれば 1 番の PC で 1 周見せる。
 6. 5 章の UI テスト（2 本目）の実行を飛ばし、サーバー側 2 本だけ実行する。
 
@@ -411,12 +411,12 @@ npm run build が通ることを確認してください。deploy はしない�
 
 | 症状 | まず見る | 対処 |
 |---|---|---|
-| 講師のデモで生成が遅い（15 分 / 29 分 / 34 分） | 時計 | Checkpoint / 完成品 T4 / `fix.ps1` に迷わず切り替える |
+| 講師のデモで生成が遅い（15 分 / 29 分 / 34 分） | 時計 | Checkpoint / 完成品 T4 / `node fix.mjs` に迷わず切り替える |
 | 講師の deploy が失敗 | エラー先頭 3 行 | 「ATF Handson 09」の完成品で見せる。修正後の画面は `evidence/suite-result-fix-5pass.png` |
 | 持ち込み PC の PDI が休止していた | ブラウザ | 札の裏の URL で `admin` ログイン。起きるまで 2〜3 分。その間その PC は使わない |
 | 持ち込み PC の Claude Code がログアウトしていた | ターミナル | 講師のアカウントでログイン。ハンズオンカードの 1〜5 は Claude Code を使わないので、ログインできなくても進められる |
-| 持ち込み PC で Negative が最初から緑 | 前の人が修正済み | `reset.ps1`（Mac: `node reset.mjs`）→ build → deploy（1 分）。時間がなければ Output の読み方だけ |
-| 持ち込み PC で `fix.ps1` が拒否される（「実行が無効」または「デジタル署名されていません」） | 赤字 | `powershell -ExecutionPolicy Bypass -File .\fix.ps1`。前日に RemoteSigned にし、展開直後に `Get-ChildItem -Recurse *.ps1 \| Unblock-File` を打っておけば起きない |
+| 持ち込み PC で Negative が最初から緑 | 前の人が修正済み | `node reset.mjs` → build → deploy（1 分）。時間がなければ Output の読み方だけ |
+| 持ち込み PC で `.ps1` を打ってしまい「実行が無効」「デジタル署名されていません」と出た | 赤字 | `.ps1` は使わない。`node fix.mjs` / `node reset.mjs` / `node setup.mjs` に読み替える（Node 版は実行ポリシーの影響を受けない） |
 | Mac で PowerShell のスクリプトを打ってしまった | | `node fix.mjs` / `node reset.mjs` / `node setup.mjs` に読み替える |
 | Run Test で Runner が開かない | ポップアップブロック | 許可して再度。または All → Automated Test Framework → Client Test Runner |
 | UI テストが Pending のまま | `sn_atf.runner.enabled` | キットのフォルダで `node set-atf-props.mjs mypdi` |
@@ -477,8 +477,8 @@ npm run build が通ることを確認してください。deploy はしない�
 │                                                                   │
 │  4. 講師に「赤が出ました」。次の方に席を譲る                            │
 │                                                                   │
-│  余裕があれば（+3 分）: themeB-kit フォルダで  .\fix.ps1              │
-│  （Mac: node fix.mjs）→ cd todo-app → npm run build → npm run deploy │
+│  余裕があれば（+3 分）: themeB-kit フォルダで  node fix.mjs           │
+│  → cd todo-app → npm run build → npm run deploy                     │
 │  → Negative をもう一度 Run Test → 緑。講師に「直しました」と一声。      │
 │                                                                   │
 │  困ったら手を挙げてください。                                        │
@@ -490,9 +490,9 @@ npm run build が通ることを確認してください。deploy はしない�
 | # | 項目 |
 |---|---|
 | 1 | 持ち込み PC 7 台分の PDI を確保（会社コードが講師と違うもの）。admin パスワードをもらう |
-| 2 | Windows 4 台: 0.1 の 1〜8 を通す。**1 台目で `setup.ps1` の所要時間を計り、キットの不具合があれば直してから残りへ** |
+| 2 | Windows 4 台: 0.1 の 1〜8 を通す。**1 台目で `node setup.mjs` の所要時間を計り、キットの不具合があれば直してから残りへ** |
 | 3 | Mac mini: 0.3 の手順を 1 台で通す。通れば残りも。通らなければ Mac は見る席にする |
-| 4 | 全台でハンズオンカードの 1〜3 を 1 周する（`claude` → 上の文 → build → deploy → Positive 緑 / Negative 赤）。所要時間を計る。**確認が終わったら、生成したテストは PDI の Tests 一覧から削除し、`atf-tests\src\fluent\atf\` を空に戻す**（本番で「既にある」と生成が短くならないように）。`fix.ps1` → `reset.ps1` の往復も 1 台で確認し、**欠陥版に戻した状態で終える** |
+| 4 | 全台でハンズオンカードの 1〜3 を 1 周する（`claude` → 上の文 → build → deploy → Positive 緑 / Negative 赤）。所要時間を計る。**確認が終わったら、生成したテストは PDI の Tests 一覧から削除し、`atf-tests\src\fluent\atf\` を空に戻す**（本番で「既にある」と生成が短くならないように）。`node fix.mjs` → `node reset.mjs` の往復も 1 台で確認し、**欠陥版に戻した状態で終える** |
 | 5 | ハンズオンカードを 7 枚印刷、番号札 1〜7 |
 | 6 | 講師 PDI: `atf10` を空に、`ATF Handson 09` に T1〜T5、検証用アプリを Delete。金曜 11:00 に欠陥版を deploy し直す |
 | 7 | Release の zip が最新（`build-kit.ps1` → `gh release upload theme-b-kit-v2 ... --clobber`） |

@@ -114,7 +114,7 @@ Get-ChildItem (Join-Path $Kit 'checkpoint'), (Join-Path $Kit 'solution') -Recurs
 Write-Host "[OK] checkpoint / solution"
 
 # --- scripts ---
-foreach ($f in @('setup.ps1', 'fix.ps1', 'reset.ps1', 'preflight.ps1', 'setup.mjs', 'fix.mjs', 'reset.mjs', 'set-atf-props.mjs', 'README.md')) {
+foreach ($f in @('setup.ps1', 'fix.ps1', 'reset.ps1', 'preflight.ps1', 'setup.mjs', 'fix.mjs', 'reset.mjs', 'preflight.mjs', 'set-atf-props.mjs', 'README.md')) {
     Copy-Item (Join-Path $ThemeB ('kit\' + $f)) (Join-Path $Kit $f)
 }
 Write-Host "[OK] scripts"
