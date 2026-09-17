@@ -9,7 +9,7 @@
 | # | 項目 | 担当 | 状態 |
 |---|---|---|---|
 | A1 | リポジトリを public にする | 講師 | 済（2026-09-16） |
-| A2 | Release `theme-b-kit-v1` に `themeB-kit.zip` を置く | 講師 | 済（新デモタイトル版に差し替え済み） |
+| A2 | Release `theme-b-kit-v2` に `themeB-kit.zip` を置く | 講師 | 済（新デモタイトル版に差し替え済み） |
 | A3 | パイロット参加者を 1 名決め、**自分の PDI を持っている人**にする（和田さん or 金山さん） | 講師 | 未 |
 | A4 | 参加者に事前課題メール（案C ガイド 付録 B）を送る。zip は Release の URL を貼る | 講師 | 未 |
 | A5 | Zoom 側の設計者役を 1 名決め、`spec.md` を渡す | 講師 | 未 |
@@ -52,7 +52,7 @@
 1. `theme-b/handout/backlog.md` に詰まった箇所を記録
 2. キットを直したら `theme-b\tools\build-kit.ps1` で zip を作り直し、Release を差し替える
    ```
-   gh release upload theme-b-kit-v1 theme-b\dist\kit\themeB-kit.zip --clobber
+   gh release upload theme-b-kit-v2 theme-b\dist\kit\themeB-kit.zip --clobber
    ```
 3. 本番参加者への事前課題メールを送る（パイロットの所要時間を「目安」として書き足す）
 4. 金 11:00 の凍結前に、講師 PDI で `git checkout theme-b-buggy` → `theme-b\todo-app` で build → deploy し、欠陥版が入っていることを確認

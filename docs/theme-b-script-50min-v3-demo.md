@@ -21,7 +21,7 @@ v2（`theme-b-script-planC-50min-v2.md`）を次の条件で組み直した。**
 | # | 状態 | 確認方法 |
 |---|---|---|
 | 1 | Node.js LTS、`@servicenow/sdk`、Claude Code（**ログイン済み**）が入っている | ターミナルで `node -v` / `now-sdk -v` / `claude` が起動する |
-| 2 | デスクトップに `themeB-kit` を展開し、`setup.ps1`（Mac は `node setup.mjs`）を通してある。その PC 用の PDI に**欠陥版**の Handson Todo が入っている | `preflight.ps1` 全 [OK]（Mac は 0.3 参照） |
+| 2 | デスクトップに `themeB-kit` を展開し、`setup.ps1`（Mac は `node setup.mjs`）を通してある。その PC 用の PDI に**欠陥版**の Handson Todo が入っている。**ブラウザで落とした zip を展開した直後は、ターミナルで `Get-ChildItem -Recurse *.ps1 \| Unblock-File` を 1 回打ってから `setup.ps1` を実行する**（打たないと「デジタル署名されていません / UnauthorizedAccess」で止まる。2026-09-17 のパイロット PC で発生） | `preflight.ps1` 全 [OK]（Mac は 0.3 参照） |
 | 3 | `atf-tests\src\fluent\atf\` は**空**（`setup.ps1` が build まで済ませてある）。参加者は Claude Code を開いてすぐテストを書かせる。**`checkpoint` の 3 本は入れない**（入れると生成が「既にある」と判断されて短くなる） | エクスプローラーで見る |
 | 4 | `atf-tests\docs\spec.md` に仕様書 5 行を置いてある（37 分時点で全員が仕様書を見ているので、参加者はすぐ Negative を頼める） | エクスプローラーで見る |
 | 5 | ブラウザ（Chrome）でその PDI に `admin` でログイン済み。タブ 1 = Handson Todo board、タブ 2 = Automated Test → Tests（Application「ATF Handson」で絞った状態）。ポップアップブロックは PDI のドメインで許可 | 一度 Run Test して Client Test Runner のタブが開くことを確認し、閉じる |
@@ -385,7 +385,7 @@ npm run build が通ることを確認してください。deploy はしない�
 👥
 ```
 【資料】https://github.com/Fukuda-Keiju/claude-handson
-  キット: Releases → theme-b-kit-v1 → themeB-kit.zip
+  キット: Releases → theme-b-kit-v2 → themeB-kit.zip
   今日のプロンプト①②③: docs/theme-b-script-50min-v3-demo.md
   ATF の解説: docs/atf-knowledge.md
 ```
@@ -416,7 +416,7 @@ npm run build が通ることを確認してください。deploy はしない�
 | 持ち込み PC の PDI が休止していた | ブラウザ | 札の裏の URL で `admin` ログイン。起きるまで 2〜3 分。その間その PC は使わない |
 | 持ち込み PC の Claude Code がログアウトしていた | ターミナル | 講師のアカウントでログイン。ハンズオンカードの 1〜5 は Claude Code を使わないので、ログインできなくても進められる |
 | 持ち込み PC で Negative が最初から緑 | 前の人が修正済み | `reset.ps1`（Mac: `node reset.mjs`）→ build → deploy（1 分）。時間がなければ Output の読み方だけ |
-| 持ち込み PC で `fix.ps1` が拒否される（実行ポリシー） | 赤字 | `powershell -ExecutionPolicy Bypass -File .\fix.ps1`。前日に RemoteSigned にしておけば起きない |
+| 持ち込み PC で `fix.ps1` が拒否される（「実行が無効」または「デジタル署名されていません」） | 赤字 | `powershell -ExecutionPolicy Bypass -File .\fix.ps1`。前日に RemoteSigned にし、展開直後に `Get-ChildItem -Recurse *.ps1 \| Unblock-File` を打っておけば起きない |
 | Mac で PowerShell のスクリプトを打ってしまった | | `node fix.mjs` / `node reset.mjs` / `node setup.mjs` に読み替える |
 | Run Test で Runner が開かない | ポップアップブロック | 許可して再度。または All → Automated Test Framework → Client Test Runner |
 | UI テストが Pending のまま | `sn_atf.runner.enabled` | キットのフォルダで `node set-atf-props.mjs mypdi` |
@@ -495,5 +495,5 @@ npm run build が通ることを確認してください。deploy はしない�
 | 4 | 全台でハンズオンカードの 1〜3 を 1 周する（`claude` → 上の文 → build → deploy → Positive 緑 / Negative 赤）。所要時間を計る。**確認が終わったら、生成したテストは PDI の Tests 一覧から削除し、`atf-tests\src\fluent\atf\` を空に戻す**（本番で「既にある」と生成が短くならないように）。`fix.ps1` → `reset.ps1` の往復も 1 台で確認し、**欠陥版に戻した状態で終える** |
 | 5 | ハンズオンカードを 7 枚印刷、番号札 1〜7 |
 | 6 | 講師 PDI: `atf10` を空に、`ATF Handson 09` に T1〜T5、検証用アプリを Delete。金曜 11:00 に欠陥版を deploy し直す |
-| 7 | Release の zip が最新（`build-kit.ps1` → `gh release upload theme-b-kit-v1 ... --clobber`） |
+| 7 | Release の zip が最新（`build-kit.ps1` → `gh release upload theme-b-kit-v2 ... --clobber`） |
 | 8 | Zoom 担当に: 「講師は Zoom の返事を待たない」「37 分から PC 1〜4 の見回り」「資料 URL を 47 分に貼る」 |

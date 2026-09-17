@@ -42,7 +42,7 @@
 1. ブラウザ: 講師 PDI に `admin`。タブ A = Handson Todo board、タブ B = Automated Test → Tests 一覧（Application「ATF Handson 09」）
 2. ターミナル 1: デスクトップ（キット未展開。3 分に参加者と同じ手順で展開する）
 3. 共有しない画面: この原稿、スライド 5 枚、`theme-b/evidence/` のスクリーンショット
-4. ブラウザの別タブ: Release ページ https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v1（zip の配布元）
+4. ブラウザの別タブ: Release ページ https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v2（zip の配布元）
 
 **時間割（合計 50 分）**
 
@@ -111,10 +111,16 @@ Zoom チャット（Zoom 担当）
 👥
 ```
 【① キットを展開】ブラウザで次の URL を開き、themeB-kit.zip をダウンロード。
-https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v1
+https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v2
 ダウンロードした zip を右クリック → 「すべて展開」→ 展開先を  デスクトップ  にして展開。
-デスクトップに themeB-kit フォルダができたら、その中を開き、何もない所で右クリック → 「ターミナルで開く」。
+デスクトップに themeB-kit フォルダができたら、その中（setup.ps1 が見える場所）を開き、何もない所で右クリック → 「ターミナルで開く」。
+開いたターミナルで、まず次の 1 行を打つ（ダウンロードしたファイルに付く「ブロック」を外す。出力は何も出ません）。
+  Get-ChildItem -Recurse *.ps1 | Unblock-File
 ```
+
+🆘
+- 展開後に `themeB-kit\themeB-kit` と二重になっている → 内側（`setup.ps1` がある方）で「ターミナルで開く」。
+- `Unblock-File` を打ち忘れて `setup.ps1` が「デジタル署名されていません」「UnauthorizedAccess」で止まった → 上の 1 行を打ってから、もう一度 `.\setup.ps1`。または `powershell -ExecutionPolicy Bypass -File .\setup.ps1`。**2026-09-17 のパイロット PC で実際に発生**（ブラウザで落とした zip を Windows 標準で展開すると必ず付く）。
 
 🖱 **講師の操作**: 同じ手順を画面でやる。展開後のフォルダの中身を見せる。「todo-app がテスト対象のアプリの中身、atf-tests がこれからテストを書かせる場所、fix は後半で使います。中は今は見ないでください。」
 
@@ -146,6 +152,7 @@ https://github.com/Fukuda-Keiju/claude-handson/releases/tag/theme-b-kit-v1
 と打って Enter。4〜5 分走ります。緑の [OK] が順に増え、最後に「準備完了です」と出れば成功。
 赤の [NG] で止まったら、その行を読み役が声に出して講師を呼んでください。
 走っている間、画面を見ながら講師の説明を聞いてください。
+（「デジタル署名されていません」と赤く出たら:  powershell -ExecutionPolicy Bypass -File .\setup.ps1  で実行）
 ```
 
 🖱 **講師の操作**: 講師も `.\setup.ps1` を打つ（講師 PDI は既に入っているので「済み」で通り抜ける。参加者の画面と同じログが流れるのは build の工程）。Zoom 共有をターミナルに。**参加者のログが進むのに合わせて**次を話す。

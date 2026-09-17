@@ -35,6 +35,11 @@
    Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
    ```
    と打って `Y`、もう一度 `.\setup.ps1`。
+   「デジタル署名されていません」「UnauthorizedAccess」と出たら（ブラウザでダウンロードした zip を展開したときに付くブロックが原因）:
+   ```
+   Get-ChildItem -Recurse *.ps1 | Unblock-File
+   ```
+   と打ってから、もう一度 `.\setup.ps1`。急ぐときは `powershell -ExecutionPolicy Bypass -File .\setup.ps1` でも実行できます。
 6. （自動）`setup.ps1` の最後で、ATF の実行設定 `sn_atf.runner.enabled` と `sn_atf.schedule.enabled` が **true** になります。黄色で「自動設定に失敗」と出たときだけ、自分の PDI で **All → sys_properties.list** を開いて 2 つを true にしてください。
 7. チェックを実行し、全部 OK のスクリーンショットを講師に送る。
    ```
