@@ -22,10 +22,10 @@ v2（`theme-b-script-planC-50min-v2.md`）を次の条件で組み直した。**
 |---|---|---|
 | 1 | Node.js LTS、`@servicenow/sdk`、Claude Code（**ログイン済み**）が入っている | ターミナルで `node -v` / `now-sdk -v` / `claude` が起動する |
 | 2 | デスクトップに `themeB-kit` を展開し、`setup.ps1`（Mac は `node setup.mjs`）を通してある。その PC 用の PDI に**欠陥版**の Handson Todo が入っている | `preflight.ps1` 全 [OK]（Mac は 0.3 参照） |
-| 3 | `atf-tests\src\fluent\atf\` に **`solution` の 7 ファイルをコピーして build → deploy 済み**（T1〜T5 とスイート 2 本がその PDI に入っている） | PDI の Tests 一覧を Application「ATF Handson」で絞ると 5 本出る |
-| 4 | `atf-tests\docs\spec.md` に仕様書 5 行を置いてある | エクスプローラーで見る |
+| 3 | `atf-tests\src\fluent\atf\` は**空**（`setup.ps1` が build まで済ませてある）。参加者は Claude Code を開いてすぐテストを書かせる。**`checkpoint` の 3 本は入れない**（入れると生成が「既にある」と判断されて短くなる） | エクスプローラーで見る |
+| 4 | `atf-tests\docs\spec.md` に仕様書 5 行を置いてある（37 分時点で全員が仕様書を見ているので、参加者はすぐ Negative を頼める） | エクスプローラーで見る |
 | 5 | ブラウザ（Chrome）でその PDI に `admin` でログイン済み。タブ 1 = Handson Todo board、タブ 2 = Automated Test → Tests（Application「ATF Handson」で絞った状態）。ポップアップブロックは PDI のドメインで許可 | 一度 Run Test して Client Test Runner のタブが開くことを確認し、閉じる |
-| 6 | ターミナルを 1 つ開き、`themeB-kit` フォルダにいる状態 | |
+| 6 | ターミナルを 1 つ開き、`themeB-kit\atf-tests` フォルダにいる状態（座った人が `claude` と打つだけで始められる） | |
 | 7 | 机に番号札（1〜7）。裏に PDI の URL と admin パスワード | |
 | 8 | スリープ・画面ロックを切る | |
 
@@ -78,7 +78,7 @@ cp solution/* atf-tests/src/fluent/atf/ && (cd atf-tests && npm run build && npm
 | 22〜25 | 仕様書を見せる → 穴を探す | 講師が配り、会場に問いかける |
 | 25〜31 | デモ 3: Negative を書かせる → 赤 → 4 分類 | 講師の実演 |
 | 31〜37 | デモ 4: AI に直させる → 送る → 再テストで緑 | 講師の実演 |
-| 37〜47 | **希望者ハンズオン** | 持ち込み PC で「赤 → 直す → 緑」を各自で。講師は巡回 |
+| 37〜47 | **希望者ハンズオン** | 持ち込み PC で「Claude Code にテストを書かせる → 送る → 実行 → 赤」を各自で。講師は巡回 |
 | 47〜50 | まとめ | 持ち帰る 3 つ、資料の案内 |
 
 **記号**: 🗣 言う / 🖱 講師の操作 / 👥 会場への問いかけ・案内 / ✅ 進む合図 / 🆘 詰まったら / ⏱ 時間の逃げ道。チャットに貼る文は会場チャットと Zoom チャットの両方へ。
@@ -332,29 +332,33 @@ npm run build が通ることを確認してください。deploy はしない�
 ## 9. 37〜47 分　希望者ハンズオン（10 分。持ち込み PC 7 台）
 
 🗣 **言う**
-「ここから 10 分、前の机の PC で、今の『赤を出して、直して、緑にする』を自分の手でやってみたい方はどうぞ。1 台に 1〜2 人。5 分で 1 周できます。机のカードに手順が書いてあります。終わった方は次の方に席を譲ってください。触らない方は、そのまま席で画面を見ていてください。Zoom には 1 番の PC の画面を映します。」
+「ここから 10 分、前の机の PC で、今の『AI にテストを書かせて、実行して、赤を出す』を自分の手でやってみたい方はどうぞ。1 台に 1〜2 人。PC にはアプリと仕様書が入っていて、Claude Code を開けばすぐ始められます。机のカードに頼み方の文が書いてあります。生成に 3〜4 分かかるので、その間に隣の PC の人と話していて構いません。触らない方は、そのまま席で画面を見ていてください。Zoom には 1 番の PC の画面を映します。」
 
 🖱 **講師の操作**
 1. Zoom 共有を **1 番の PC**（HDMI 分配かカメラ）に切り替える。難しければ講師の画面で 8 章の再テスト画面を映したままにする。
 2. 講師は巡回。Zoom 担当（またはお世話係 1 名）が PC 1〜4、講師が 5〜7 を見る。
-3. **1 周終わった PC は、次の人が座る前に `reset.ps1`（Mac は `node reset.mjs`）→ `cd todo-app` → `npm run build` → `npm run deploy`（約 1 分）で欠陥版に戻す。** 講師か Zoom 担当がやる。戻す時間がなければ「この PC は修正済みの状態なので、緑を確認して Output を読むところまで」と伝える。
+3. **次の人が座るときのリセットは基本不要。** テストは前の人の分に追加されるだけで、アプリは欠陥版のまま（赤は何度でも出る）。前の人が「余裕があれば」の修正まで進めて緑にしてしまった PC だけ、`reset.ps1`（Mac は `node reset.mjs`）→ `cd todo-app` → `npm run build` → `npm run deploy`（約 1 分）で欠陥版に戻す。講師か Zoom 担当がやる。
+4. Claude Code の生成中（3〜4 分）が空き時間になる。講師はその PC を離れ、他の PC を見る。生成が終わった人には「build が通りました、と出たら次の行へ」と声をかける。
 
 👥（チャットにも貼る。机のカードと同じ）
 ```
-【ハンズオンカード】番号札の PC で。5 分。Windows の PC はそのまま、Mac は「Mac 用」の行を見てください。
-1. ブラウザの Tests のタブで「空タイトルはサーバーで拒否される (Negative)」を開き、Run Test → Run Test。
-   → 赤（Failure）になる。下の Test Result Items で赤いステップを開き、Output を読む。「Inserted record」＝アプリが空欄を保存してしまった。
-2. ターミナル（themeB-kit フォルダ）で
-     .\fix.ps1                （Mac 用:  node fix.mjs）
-   → 直した 3 ファイルと、追加された 3 行が表示される。読む。
-3. 続けて
-     cd todo-app
+【ハンズオンカード】番号札の PC で。8 分。
+1. ターミナル（themeB-kit\atf-tests フォルダで開いてあります）で  claude  と打って Enter。入力欄が出たら、次の文をそのまま貼って Enter。
+     このプロジェクトは ServiceNow Fluent SDK の ATF テスト専用プロジェクトです。
+     テスト対象のアプリの情報は CLAUDE.md、仕様書は docs/spec.md にあります。
+     CLAUDE.md のルールに従って、次の 2 本の ATF テストと、それをまとめた TestSuite を src/fluent/atf/ に作ってください。
+     1. Positive（サーバー）: タイトル付きでレコードを作成でき、state の初期値が open であること
+     2. Negative（サーバー）: 仕様 1 のとおり、タイトルが空のレコードは作成が拒否されること
+     作り終えたら npm run build が通ることを確認してください。deploy はしないでください。
+   途中で「よいか」と聞かれたら Yes。「build が通りました」と出るまで 3〜4 分。待っている間、画面に出るファイルの中身を眺めてください。
+2. 終わったら Esc で claude を抜け、同じターミナルで
      npm run build
      npm run deploy           （合わせて 1 分ほど。「Installation completed」が出るまで待つ）
-4. ブラウザの Tests のタブに戻り、同じ Negative を Run Test → Run Test。→ 緑（Success）。
-5. 「タイトル付きで作成すると state=open になる」も Run Test。→ 緑のまま（回帰確認）。
-6. 終わったら講師に「終わりました」と一声。次の方に席を譲る。
-余裕があれば: atf-tests フォルダで  claude  を起動し、「docs/spec.md の 2 番（タイトルは 100 文字以内）が守られることを確認する Negative Test を 1 本追加して npm run build を通してください。deploy はしないでください」と頼んでみる（3〜4 分）。
+3. ブラウザの Tests のタブを F5。自分のテスト 2 本が出る。
+   Positive を開き Run Test → Run Test → 緑（Success）。
+   Negative を開き Run Test → Run Test → 赤（Failure）。下の赤いステップを開き、Output を読む。「Inserted record」＝空欄なのに保存された＝アプリの欠陥。
+4. 終わったら講師に「赤が出ました」と一声。次の方に席を譲る。
+余裕があれば（+3 分）: themeB-kit フォルダのターミナルで  .\fix.ps1（Mac:  node fix.mjs）→  cd todo-app  →  npm run build  →  npm run deploy。Negative をもう一度 Run Test → 緑。終わったら講師に「直しました」と伝える（次の人のために欠陥版に戻します）。
 ```
 
 ⏱ 45 分に「あと 2 分です。今の工程が終わったところで止めてください」。47 分で締めに入る。**触っている人が途中でも止める。** 「続きは後日、キットで同じことができます。」
@@ -416,7 +420,8 @@ npm run build が通ることを確認してください。deploy はしない�
 | Mac で PowerShell のスクリプトを打ってしまった | | `node fix.mjs` / `node reset.mjs` / `node setup.mjs` に読み替える |
 | Run Test で Runner が開かない | ポップアップブロック | 許可して再度。または All → Automated Test Framework → Client Test Runner |
 | UI テストが Pending のまま | `sn_atf.runner.enabled` | キットのフォルダで `node set-atf-props.mjs mypdi` |
-| ハンズオン希望者が多い | 7 台 × 5 分 | 1 台 2 人まで。待つ人には「後日キットで同じことができます」。45 分で打ち切る |
+| ハンズオン希望者が多い | 7 台 × 8 分 = 1 回転 | 1 台 2 人まで。待つ人には「後日キットで同じことができます」。45 分で打ち切る |
+| ハンズオンで Claude Code の生成が 5 分を超える | 時計 | Esc で止め、`themeB-kit\solution` の `t1-insert-open.now.ts` と `t4-empty-title-server.now.ts` の 2 本だけを `atf-tests\src\fluent\atf\` にコピー → build → deploy → Run Test。「同じ内容の完成品です」 |
 | ハンズオン希望者がいない | | 講師が 1 番の PC で 1 周やり、質問を受ける時間にする |
 | Zoom の画面共有が止まる | | 会場を優先。Zoom 担当がチャットで実況し、復旧後に再開 |
 
@@ -440,34 +445,44 @@ npm run build が通ることを確認してください。deploy はしない�
 ## 付録 A. ハンズオンカード（机に置く 1 枚。A5 で印刷）
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  テーマB ハンズオン（5 分）  番号札 ___                         │
-│                                                              │
-│  1. ブラウザの「Tests」タブ →                                  │
-│     「空タイトルはサーバーで拒否される (Negative)」を開く        │
-│     → Run Test → Run Test  →  赤（Failure）                   │
-│     → 下の赤いステップを開き、Output を読む                     │
-│       「Inserted record …」＝ 空欄なのに保存された = 欠陥       │
-│                                                              │
-│  2. ターミナル（themeB-kit フォルダ）で                          │
-│       Windows:  .\fix.ps1        Mac:  node fix.mjs           │
-│     → 直した 3 ファイルと追加された 3 行が出る                   │
-│                                                              │
-│  3. 続けて                                                    │
-│       cd todo-app                                            │
-│       npm run build                                          │
-│       npm run deploy      （1 分。Installation completed まで） │
-│                                                              │
-│  4. ブラウザの「Tests」タブ → 同じ Negative を Run Test          │
-│     → 緑（Success）                                           │
-│                                                              │
-│  5. 「タイトル付きで作成すると state=open になる」も Run Test     │
-│     → 緑のまま（直して別の所を壊していない = 回帰確認）           │
-│                                                              │
-│  6. 講師に「終わりました」。次の方に席を譲る                       │
-│                                                              │
-│  困ったら手を挙げてください。                                   │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│  テーマB ハンズオン（8 分）  番号札 ___                              │
+│  この PC の PDI には、講師が見せたのと同じ欠陥版アプリが入っています。 │
+│                                                                   │
+│  1. ターミナルで  claude  → Enter。入力欄が出たら下の文を貼る:        │
+│                                                                   │
+│     このプロジェクトは ServiceNow Fluent SDK の ATF テスト専用        │
+│     プロジェクトです。テスト対象のアプリの情報は CLAUDE.md、           │
+│     仕様書は docs/spec.md にあります。CLAUDE.md のルールに従って、     │
+│     次の 2 本の ATF テストと、それをまとめた TestSuite を             │
+│     src/fluent/atf/ に作ってください。                               │
+│     1. Positive（サーバー）: タイトル付きでレコードを作成でき、        │
+│        state の初期値が open であること                              │
+│     2. Negative（サーバー）: 仕様 1 のとおり、タイトルが空の           │
+│        レコードは作成が拒否されること                                │
+│     作り終えたら npm run build が通ることを確認してください。          │
+│     deploy はしないでください。                                      │
+│                                                                   │
+│     聞かれたら Yes。「build が通りました」まで 3〜4 分。               │
+│                                                                   │
+│  2. Esc で抜けて、同じターミナルで                                   │
+│       npm run build                                               │
+│       npm run deploy      （1 分。Installation completed まで）      │
+│                                                                   │
+│  3. ブラウザの「Tests」タブを F5 → 自分の 2 本が出る                   │
+│     Positive → Run Test → Run Test → 緑（Success）                  │
+│     Negative → Run Test → Run Test → 赤（Failure）                  │
+│     赤いステップを開き Output を読む:                                 │
+│       「Inserted record …」＝ 空欄なのに保存された ＝ アプリの欠陥     │
+│                                                                   │
+│  4. 講師に「赤が出ました」。次の方に席を譲る                            │
+│                                                                   │
+│  余裕があれば（+3 分）: themeB-kit フォルダで  .\fix.ps1              │
+│  （Mac: node fix.mjs）→ cd todo-app → npm run build → npm run deploy │
+│  → Negative をもう一度 Run Test → 緑。講師に「直しました」と一声。      │
+│                                                                   │
+│  困ったら手を挙げてください。                                        │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ## 付録 B. 前日（木）の講師チェックリスト（v3 で変わった分）
@@ -477,7 +492,7 @@ npm run build が通ることを確認してください。deploy はしない�
 | 1 | 持ち込み PC 7 台分の PDI を確保（会社コードが講師と違うもの）。admin パスワードをもらう |
 | 2 | Windows 4 台: 0.1 の 1〜8 を通す。**1 台目で `setup.ps1` の所要時間を計り、キットの不具合があれば直してから残りへ** |
 | 3 | Mac mini: 0.3 の手順を 1 台で通す。通れば残りも。通らなければ Mac は見る席にする |
-| 4 | 全台で T4 を Run Test して赤、`fix.ps1`（Mac は `node fix.mjs`）→ build → deploy → T4 緑、`reset.ps1`（`node reset.mjs`）→ build → deploy → T4 赤、まで 1 周回して**欠陥版に戻した状態で終える** |
+| 4 | 全台でハンズオンカードの 1〜3 を 1 周する（`claude` → 上の文 → build → deploy → Positive 緑 / Negative 赤）。所要時間を計る。**確認が終わったら、生成したテストは PDI の Tests 一覧から削除し、`atf-tests\src\fluent\atf\` を空に戻す**（本番で「既にある」と生成が短くならないように）。`fix.ps1` → `reset.ps1` の往復も 1 台で確認し、**欠陥版に戻した状態で終える** |
 | 5 | ハンズオンカードを 7 枚印刷、番号札 1〜7 |
 | 6 | 講師 PDI: `atf10` を空に、`ATF Handson 09` に T1〜T5、検証用アプリを Delete。金曜 11:00 に欠陥版を deploy し直す |
 | 7 | Release の zip が最新（`build-kit.ps1` → `gh release upload theme-b-kit-v1 ... --clobber`） |
